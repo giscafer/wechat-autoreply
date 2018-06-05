@@ -1,7 +1,7 @@
 {
     "name": "wechat-autopicture",
-    "version": "1.0.1",
-    "description": "Auto good night to girlfriend",
+    "version": "1.0.2",
+    "description": "微信自动回复",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"

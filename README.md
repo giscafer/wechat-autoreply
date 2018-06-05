@@ -13,6 +13,16 @@
 
 ## Screenshot
 
-![screenshot](./screenshot/screenshot.jpg)
+![screenshot](./screenshot/screenshot.jpg) ![screenshot4](./screenshot/screenshot4.jpg)
+
 ![screenshot2](./screenshot/screenshot2.jpg)
 
+
+## License
+MIT
+
+---
+
+> [giscafer.com](http://giscafer.com) &nbsp;&middot;&nbsp;
+> GitHub [@giscafer](https://github.com/giscafer) &nbsp;&middot;&nbsp;
+> Weibo [@Nickbing Lao](https://weibo.com/laohoubin)
