@@ -1,32 +1,32 @@
 {
-  "name": "goodnight",
-  "version": "0.0.1",
-  "description": "Auto good night to girlfriend",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DIYgod/GoodNight.git"
-  },
-  "keywords": [
-    "wechat"
-  ],
-  "author": "DIYgod",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/DIYgod/GoodNight/issues"
-  },
-  "homepage": "https://github.com/DIYgod/GoodNight#readme",
-  "dependencies": {
-    "babel-register": "6.26.0",
-    "cron": "1.3.0",
-    "es6-promise": "^4.2.4",
-    "isomorphic-fetch": "^2.2.1",
-    "qrcode-terminal": "0.12.0",
-    "request": "^2.87.0",
-    "urlencode": "^1.1.0",
-    "wechat4u": "^0.7.6"
-  }
+    "name": "wechat-autopicture",
+    "version": "1.0.1",
+    "description": "Auto good night to girlfriend",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/giscafer/wechat-autopicture.git"
+    },
+    "keywords": [
+        "wechat"
+    ],
+    "author": "Nickbing Lao<giscafer@outlook.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/giscafer/wechat-autopicture/issues"
+    },
+    "homepage": "https://github.com/giscafer/wechat-autopicture#readme",
+    "dependencies": {
+        "babel-register": "6.26.0",
+        "cron": "1.3.0",
+        "es6-promise": "^4.2.4",
+        "isomorphic-fetch": "^2.2.1",
+        "qrcode-terminal": "0.12.0",
+        "request": "^2.87.0",
+        "urlencode": "^1.1.0",
+        "wechat4u": "^0.7.6"
+    }
 }

@@ -1,5 +1,7 @@
 # wechat-autopicture
-微信自动图片搜索，自动回复
+微信图片搜索，自动回复图片
+
+关键字 `图 xxx`，比如要搜索`篮球`，回复：`图 篮球`，搜索新恒结衣，回复：`图 新恒结衣`
 
 
 ## Usage
@@ -10,6 +12,6 @@
 
 ## Screenshot
 
-![screenshot](./screenshot.jpg)
-![screenshot2](./screenshot2.jpg)
+![screenshot](./screenshot/screenshot.jpg)
+![screenshot2](./screenshot/screenshot2.jpg)
 
