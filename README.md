@@ -1,4 +1,4 @@
-# wechat-autopicture
+# wechat-autoreply
 
 微信自动回复
 
