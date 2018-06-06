@@ -1,7 +1,7 @@
 {
     "name": "wechat-autoreply",
-    "version": "1.0.2",
-    "description": "微信自动回复",
+    "version": "1.1.0",
+    "description": "web微信自动回复",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"

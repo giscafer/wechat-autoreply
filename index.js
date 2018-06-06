@@ -6,20 +6,25 @@
 // polyfill
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
+require('./utils/polyfill');
 // middleware
 const Wechat = require('wechat4u');
 const request = require('request');
 const qrcode = require('qrcode-terminal');
 const fs = require('fs');
 
-// modules
-const getPicture = require('./utils/searchPic');
+// utils
 const _ = require('./utils/util');
-const getTyphoonInfo = require('./utils/typhoon.js');
-const translate = require('./utils/translate');
-const ip = require('./utils/ip');
-const weather = require('./utils/weather');
-const keyword = require('./utils/keyword');
+const imgUtil = require('./utils/image');
+
+// modules
+const poetry = require('./modules/poetry');
+const getPicture = require('./modules/searchPic');
+const getTyphoonInfo = require('./modules/typhoon.js');
+const translate = require('./modules/translate');
+const ip = require('./modules/ip');
+const weather = require('./modules/weather');
+const keyword = require('./modules/keyword');
 
 let bot, loginUserName;
 let contactUsers = [],
@@ -143,7 +148,10 @@ function uploadMedia(img, msg) {
                 filename: new Date().getTime() + '.jpg'
             }, toUserName)
             .catch(err => {
-                console.log(err)
+                let info = '图片获取失败：' + img;
+                console.log(info);
+                console.log(err);
+                sendText(info, msg);
             });
         return;
     } else {
@@ -174,7 +182,8 @@ function textMsgHandler(msg) {
     if (text.indexOf('图 ') === 0) {
         getPicture(text.replace('图', '').replace('图片', '').trim()).then(url => {
             if (url) {
-                uploadMedia(url, msg);
+                let imgUrl = imgUtil.getImageUrl(url);
+                uploadMedia(imgUrl, msg);
             }
         }).catch(err => {})
     }
@@ -188,7 +197,6 @@ function textMsgHandler(msg) {
     // 词典翻译
     else if (_.isTranslate(text)) {
         let _text = _.getTransText(text);
-        console.log(_text);
         translate(Object.assign({
             from: 'en',
             to: 'zh',
@@ -200,8 +208,8 @@ function textMsgHandler(msg) {
     // ip归属地信息
     else if (_.isIpQuery(text)) {
         let ipStr = _.getIP(text);
+        // console.log(ipStr)
         ip(ipStr).then(result => {
-            console.log(result)
             sendText(result, msg);
         });
     }
@@ -209,9 +217,15 @@ function textMsgHandler(msg) {
     else if (_.isWeatherQuery(text)) {
         let cityName = _.getCity(text);
         weather(cityName).then(result => {
-            console.log(result)
             sendText(result, msg);
         });
+    }
+    // 唐诗宋词查询
+    else if (_.isPoetry(text)) {
+        let result = poetry(text);
+        if (result) {
+            sendText(result, msg);
+        }
     }
     // 助手介绍信息
     else if (_.replyIntro(text)) {
@@ -219,7 +233,7 @@ function textMsgHandler(msg) {
         sendText(result, msg);
     }
     // 关键词设定自动回复
-    else if (text.indexOf('查') === 0) {
+    else if (text.startsWith('查') || text.startsWith('query')) {
         let result = keyword(text);
         if (result) {
             sendText(result, msg);

@@ -12,31 +12,32 @@ function isJR(text) {
 
 // 翻译
 function isTranslate(text) {
-    return (text.indexOf('中译英') === 0 || text.indexOf('英译中') === 0);
+    console.log(zh2en(text) || en2zh(text) || zh2jp(text) || jp2zh(text) || zh2kor(text) || kor2zh(text))
+    return (zh2en(text) || en2zh(text) || zh2jp(text) || jp2zh(text) || zh2kor(text) || kor2zh(text));
 }
 
 function zh2en(text) {
-    return (text.indexOf('中译英') === 0);
+    return text.startsWith('中译英');
 }
 
 function en2zh(text) {
-    return (text.includes('英译中') === 0);
+    return text.startsWith('英译中');
 }
 
 function zh2jp(text) {
-    return (text.includes('中译日') === 0);
+    return text.startsWith('中译日');
 }
 
 function jp2zh(text) {
-    return (text.includes('日译中') === 0);
+    return text.startsWith('日译中');
 }
 
 function zh2kor(text) {
-    return (text.includes('中译韩') === 0);
+    return text.startsWith('中译韩');
 }
 
 function kor2zh(text) {
-    return (text.includes('韩译中') === 0);
+    return text.startsWith('韩译中');
 }
 
 function transTarget(text) {
@@ -74,7 +75,7 @@ function transTarget(text) {
 }
 
 function getTransText(text) {
-    return text.replace(/中译英|英译中/g, '').trim();
+    return text.replace(/中译英|英译中|中译日|日译中|中译韩|韩译中/g, '').trim();
 }
 
 // 使用介绍
@@ -85,12 +86,25 @@ function replyIntro(text) {
 // ip
 function isIpQuery(text) {
     text = text.toUpperCase();
-    return (text.indexOf('IP查询') === 0);
+    return (text.indexOf('IP查询') === 0 || text.indexOf('查IP') === 0);
 }
 
 function getIP(text) {
     text = text.toUpperCase();
-    return text.replace(/IP查询/g, '').trim();
+    return text.replace(/IP查询|查IP/g, '').trim();
+}
+
+// 宋词唐诗
+function isPoetry(text) {
+    return (text.indexOf('查唐诗') === 0 || text.indexOf('查宋词') === 0);
+}
+
+function isSongPoetry(text) {
+    return (text.indexOf('查宋词') === 0);
+}
+
+function getPoetryTitle(text) {
+    return text.replace(/查唐诗|查宋词/g, '').trim();
 }
 
 function introInfo() {
@@ -99,9 +113,19 @@ function introInfo() {
 
     1.自动查询图片：回复 “图 关键字”，如：图 西瓜；
 
-    2.中英互译功能：中文翻译英文回复 “中译英 中国”，英文翻译中文回复：“英译中 China”；
+    2.中文和英文、韩文、日文互译：如：“中译英 中国”，“英译中 China”，“中译日 你好”；
 
     3.查询台风信息：回复 “查台风”；
+
+    4.查询宋词：随机宋词回复 “查宋词”，指定宋词回复 “查宋词 退宫妓”，根据词人搜索回复 “查宋词 王之道”；
+
+    5.查询唐诗：随机唐诗回复 “查唐诗”，指定唐诗回复 “查唐诗 春晓”，根据诗人搜索回复 “查唐诗 李白”；
+
+    6.查询ip归属地：如 “查ip 221.193.207.29”；
+
+    7.查询天气信息，回复 “查天气 城市名称”，如 “查天气 广州”；
+
+    8.关键词自动回复有： “query电话号码”；
 
     （更多功能扩展中……）
     `;
@@ -117,8 +141,10 @@ function getCity(text) {
 }
 
 
-
 module.exports = {
+    getPoetryTitle,
+    isSongPoetry,
+    isPoetry,
     isWeatherQuery,
     getCity,
     getIP,
