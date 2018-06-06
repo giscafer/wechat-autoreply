@@ -10,26 +10,30 @@ const fs = require('fs');
 const _ = require('../utils/util');
 const random = require('../utils/random');
 
+// 云服务器内存小，所以设置小值
+let songLen = 5; //最大254
+let tangLen = 5; //最大58
+
 // 异步缓存song词
 let songArray = [];
-for (let i = 0; i < 254; i++) {
-    fs.readFile(`./data/poetry/poet.song.${i*1000}.json`, 'utf-8', (err, data) => {
+for (let i = 0; i < songLen; i++) {
+    fs.readFile(`./data/poetry/poet.song.${i * 1000}.json`, 'utf-8', (err, data) => {
         if (!err) {
             songArray = songArray.concat(JSON.parse(data));
         }
-        if (i === 253) {
+        if (i === songLen - 1) {
             console.log('缓存宋词：', songArray.length);
         }
     });
 }
 // 异步缓存唐诗
 let tangArray = [];
-for (let i = 0; i < 58; i++) {
-    fs.readFile(`./data/poetry/poet.tang.${i*1000}.json`, 'utf-8', (err, data) => {
+for (let i = 0; i < tangLen; i++) {
+    fs.readFile(`./data/poetry/poet.tang.${i * 1000}.json`, 'utf-8', (err, data) => {
         if (!err) {
             tangArray = tangArray.concat(JSON.parse(data));
         }
-        if (i === 57) {
+        if (i === tangLen - 1) {
             console.log('缓存唐诗：', tangArray.length);
         }
     });
@@ -43,7 +47,12 @@ const song = (title) => {
         return songArray[index];
     }
     for (const poetry of songArray) {
-        if (poetry.title == title || poetry.title.includes(title) || poetry.author.includes(title)) {
+        if (poetry.title == title) {
+            return poetry;
+        }
+    }
+    for (const poetry of songArray) {
+        if (poetry.title.includes(title) || poetry.author.includes(title)) {
             return poetry;
         }
     }
@@ -57,7 +66,12 @@ const tang = (title) => {
         return tangArray[index];
     }
     for (const poetry of tangArray) {
-        if (poetry.title == title || poetry.title.includes(title) || poetry.author.includes(title)) {
+        if (poetry.title == title) {
+            return poetry;
+        }
+    }
+    for (const poetry of tangArray) {
+        if (poetry.title.includes(title) || poetry.author.includes(title)) {
             return poetry;
         }
     }

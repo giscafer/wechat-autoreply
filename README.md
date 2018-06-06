@@ -30,18 +30,32 @@ web微信自动回复，（web微信！！！非微信公众号）
 - ……（持续更新）
 
 
+
+### Tips
+
+代码`./modules/poetry.js` 诗词的数量设置小了，内存够的同学可以分开（>3G），最大见注释
+
+```
+// 云服务器内存小，所以设置小值
+let songLen = 5; //最大254
+let tangLen = 5; //最大58
+```
+
 ## Usage
 
 - npm install
-- node index
+- node index 
 
+运行后扫码二维码登录微信即可
 
 ## Screenshot
 
 ![screenshot](./screenshot/screenshot.jpg) ![screenshot4](./screenshot/screenshot4.jpg)
 
-![screenshot2](./screenshot/screenshot2.jpg)
+![screenshot5](./screenshot/screenshot5.jpg) ![screenshot2](./screenshot/screenshot2.jpg)
 
+
+![screenshot3](./screenshot/screenshot3.jpg)
 
 ## Relation
 
