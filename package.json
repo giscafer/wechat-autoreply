@@ -1,5 +1,5 @@
 {
-    "name": "wechat-autopicture",
+    "name": "wechat-autoreply",
     "version": "1.0.2",
     "description": "微信自动回复",
     "main": "index.js",
@@ -8,17 +8,18 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/giscafer/wechat-autopicture.git"
+        "url": "git+https://github.com/giscafer/wechat-autoreply.git"
     },
     "keywords": [
-        "wechat"
+        "wechat",
+        "autoreplay"
     ],
     "author": "Nickbing Lao<giscafer@outlook.com>",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/giscafer/wechat-autopicture/issues"
+        "url": "https://github.com/giscafer/wechat-autoreply/issues"
     },
-    "homepage": "https://github.com/giscafer/wechat-autopicture#readme",
+    "homepage": "https://github.com/giscafer/wechat-autoreply#readme",
     "dependencies": {
         "babel-register": "6.26.0",
         "cron": "1.3.0",
