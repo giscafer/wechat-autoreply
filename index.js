@@ -1,12 +1,25 @@
+/*--------------------------------------------------------------
+ *  Copyright (c) Nickbing Lao<giscafer@outlook.com>. All rights reserved.
+ *  Licensed under the MIT License.
+ *-------------------------------------------------------------*/
+
+// polyfill
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+// middleware
 const Wechat = require('wechat4u');
 const request = require('request');
 const qrcode = require('qrcode-terminal');
 const fs = require('fs');
 
+// modules
 const getPicture = require('./utils/searchPic');
 const _ = require('./utils/util');
 const getTyphoonInfo = require('./utils/typhoon.js');
 const translate = require('./utils/translate');
+const ip = require('./utils/ip');
+const weather = require('./utils/weather');
+const keyword = require('./utils/keyword');
 
 let bot, loginUserName;
 let contactUsers = [],
@@ -126,9 +139,9 @@ function uploadMedia(img, msg) {
     if (img.includes('http')) {
         console.log(img);
         bot.sendMsg({
-            file: request(img),
-            filename: new Date().getTime() + '.jpg'
-        }, toUserName)
+                file: request(img),
+                filename: new Date().getTime() + '.jpg'
+            }, toUserName)
             .catch(err => {
                 console.log(err)
             });
@@ -157,38 +170,60 @@ function textMsgHandler(msg) {
         text = text.substr(index + 1, text.length);
     }
     text = text.trim();
+    // 图片搜索
     if (text.indexOf('图 ') === 0) {
         getPicture(text.replace('图', '').replace('图片', '').trim()).then(url => {
             if (url) {
                 uploadMedia(url, msg);
             }
-        }).catch(err => { })
-    } else if (text.indexOf('查台风') === 0) {
+        }).catch(err => {})
+    }
+    // 台风查询
+    else if (text.indexOf('查台风') === 0) {
         getTyphoonInfo().then(text => {
             text = text || '当前没有台风！';
             sendText(text, msg);
         });
-    } else if (_.isTranslate(text)) {
+    }
+    // 词典翻译
+    else if (_.isTranslate(text)) {
         let _text = _.getTransText(text);
         console.log(_text);
-        if (_.isChinese(text)) {
-            translate(_text, result => {
-                sendText(result, msg);
-            });
-        } else {
-            translate({
-                from: 'en',
-                to: 'zh',
-                query: _text
-            }, result => {
-                sendText(result, msg);
-            });
-        }
-
-    } else if (_.replyIntro(text)) {
+        translate(Object.assign({
+            from: 'en',
+            to: 'zh',
+            query: _text
+        }, _.transTarget(text)), result => {
+            sendText(result, msg);
+        });
+    }
+    // ip归属地信息
+    else if (_.isIpQuery(text)) {
+        let ipStr = _.getIP(text);
+        ip(ipStr).then(result => {
+            console.log(result)
+            sendText(result, msg);
+        });
+    }
+    // 天气信息
+    else if (_.isWeatherQuery(text)) {
+        let cityName = _.getCity(text);
+        weather(cityName).then(result => {
+            console.log(result)
+            sendText(result, msg);
+        });
+    }
+    // 助手介绍信息
+    else if (_.replyIntro(text)) {
         let result = _.introInfo();
-        console.log(result)
         sendText(result, msg);
+    }
+    // 关键词设定自动回复
+    else if (text.indexOf('查') === 0) {
+        let result = keyword(text);
+        if (result) {
+            sendText(result, msg);
+        }
     }
 
     /* else if (_.isCurry(text)) {
@@ -197,4 +232,3 @@ function textMsgHandler(msg) {
         uploadMedia('jr.png', msg);
     } */
 }
-

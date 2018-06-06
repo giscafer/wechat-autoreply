@@ -1,6 +1,3 @@
-require('es6-promise').polyfill();
-require('isomorphic-fetch');
-
 //http://image.so.com/j?q=curry&src=srp&correct=curry&sn=30&pn=1
 
 
@@ -17,7 +14,7 @@ const randomIndex = (length) => {
 function getPicture(key) {
     key = key.trim();
     let url = searchUrl(key);
-    console.log(url)
+    // console.log(url);
     return new Promise((resolve, reject) => {
         fetch(url).then(res => res.json()).then(json => {
             const { length } = json.list;

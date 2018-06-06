@@ -10,24 +10,87 @@ function isJR(text) {
     return (text.includes('jr') || text.includes('JR') || text.includes('MVP'));
 }
 
+// 翻译
 function isTranslate(text) {
     return (text.indexOf('中译英') === 0 || text.indexOf('英译中') === 0);
 }
 
-function isChinese(text) {
+function zh2en(text) {
     return (text.indexOf('中译英') === 0);
 }
 
-function isEglish(text) {
+function en2zh(text) {
     return (text.includes('英译中') === 0);
+}
+
+function zh2jp(text) {
+    return (text.includes('中译日') === 0);
+}
+
+function jp2zh(text) {
+    return (text.includes('日译中') === 0);
+}
+
+function zh2kor(text) {
+    return (text.includes('中译韩') === 0);
+}
+
+function kor2zh(text) {
+    return (text.includes('韩译中') === 0);
+}
+
+function transTarget(text) {
+    if (zh2en(text)) {
+        return {
+            from: 'zh',
+            to: 'en'
+        }
+    } else if (en2zh(text)) {
+        return {
+            from: 'en',
+            to: 'zh'
+        }
+    } else if (zh2jp(text)) {
+        return {
+            from: 'zh',
+            to: 'jp'
+        }
+    } else if (jp2zh(text)) {
+        return {
+            from: 'jp',
+            to: 'zh'
+        }
+    } else if (zh2kor(text)) {
+        return {
+            from: 'zh',
+            to: 'kor'
+        }
+    } else if (kor2zh(text)) {
+        return {
+            from: 'kor',
+            to: 'zh'
+        }
+    }
 }
 
 function getTransText(text) {
     return text.replace(/中译英|英译中/g, '').trim();
 }
 
+// 使用介绍
 function replyIntro(text) {
     return (text.indexOf('小泳助手') === 0 || text.indexOf('厚宾助手') === 0 || text.indexOf('giscafer小助手') === 0 || text.indexOf('giscafer助手') === 0);
+}
+
+// ip
+function isIpQuery(text) {
+    text = text.toUpperCase();
+    return (text.indexOf('IP查询') === 0);
+}
+
+function getIP(text) {
+    text = text.toUpperCase();
+    return text.replace(/IP查询/g, '').trim();
 }
 
 function introInfo() {
@@ -44,12 +107,26 @@ function introInfo() {
     `;
 }
 
+// 天气
+function isWeatherQuery(text) {
+    return (text.indexOf('查询天气') === 0 || text.indexOf('查天气') === 0);
+}
+
+function getCity(text) {
+    return text.replace(/查询天气|查天气/g, '').trim();
+}
+
+
+
 module.exports = {
+    isWeatherQuery,
+    getCity,
+    getIP,
+    isIpQuery,
     replyIntro,
     introInfo,
     getTransText,
-    isChinese,
-    isEglish,
+    transTarget,
     isTranslate,
     isLebrain,
     isCurry,
