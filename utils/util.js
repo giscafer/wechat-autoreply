@@ -80,7 +80,7 @@ function getTransText(text) {
 
 // 使用介绍
 function replyIntro(text) {
-    return (text.indexOf('小泳助手') === 0 || text.indexOf('厚宾助手') === 0 || text.indexOf('giscafer小助手') === 0 || text.indexOf('giscafer助手') === 0);
+    return (text==='小泳助手' || text==='厚宾助手' || text==='giscafer小助手' || text==='giscafer助手');
 }
 
 // ip
