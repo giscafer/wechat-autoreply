@@ -1,6 +1,6 @@
 # wechat-autoreply
 
-web微信自动回复，（web微信！！！非微信公众号）
+web微信自动回复，（web微信！！！非微信公众号，不管是在微信群聊还是微信私聊中，触发关键词，都会出现自动回复）
 
 
 ## Feature
@@ -49,6 +49,8 @@ let tangLen = 5; //最大58
 运行后扫码二维码登录微信即可
 
 ## Screenshot
+
+**不管是在微信群聊还是微信私聊中，触发关键词，都会出现自动回复**
 
 ![screenshot](./screenshot/screenshot.jpg) ![screenshot4](./screenshot/screenshot4.jpg)
 
