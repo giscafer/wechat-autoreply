@@ -10,9 +10,9 @@ const fs = require('fs');
 const _ = require('../utils/util');
 const random = require('../utils/random');
 
-// 云服务器内存小，所以设置小值
-let songLen = 5; //最大254
-let tangLen = 5; //最大58
+// 诗词数量加载控制
+let songLen = 254; //宋词，最大254
+let tangLen = 58; //唐诗，最大58
 
 // 异步缓存song词
 let songArray = [];

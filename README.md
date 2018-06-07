@@ -33,12 +33,12 @@ web微信自动回复，（web微信！！！非微信公众号，不管是在�
 
 ### Tips
 
-代码`./modules/poetry.js` 诗词的数量设置小了，内存够的同学可以分开（>3G），最大见注释
+如果诗词很多找不到，可能是代码`./modules/poetry.js` 诗词的数量设置小了，内存够的同学可以放开（>3G），最大见注释
 
 ```
-// 云服务器内存小，所以设置小值
-let songLen = 5; //最大254
-let tangLen = 5; //最大58
+// 诗词数量加载控制
+let songLen = 254; //宋词，最大254
+let tangLen = 58; //唐诗，最大58
 ```
 
 ## Usage
@@ -46,7 +46,7 @@ let tangLen = 5; //最大58
 - npm install
 - node index 
 
-运行后扫码二维码登录微信即可
+运行后扫描二维码登录微信即可
 
 ## Screenshot
 
