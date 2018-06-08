@@ -4,8 +4,6 @@
  *-------------------------------------------------------------*/
 
 // polyfill
-require('es6-promise').polyfill();
-require('isomorphic-fetch');
 require('./utils/polyfill');
 // middleware
 const Wechat = require('wechat4u');
@@ -25,6 +23,7 @@ const translate = require('./modules/translate');
 const ip = require('./modules/ip');
 const weather = require('./modules/weather');
 const keyword = require('./modules/keyword');
+const jobs = require('./modules/jobs');
 
 let bot, loginUserName;
 let contactUsers = [],
@@ -226,6 +225,12 @@ function textMsgHandler(msg) {
         if (result) {
             sendText(result, msg);
         }
+    }
+    // 查招聘信息
+    else if (_.isFindJobs(text)) {
+        jobs().then(result => {
+            sendText(result, msg);
+        });
     }
     // 助手介绍信息
     else if (_.replyIntro(text)) {

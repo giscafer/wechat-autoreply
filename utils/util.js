@@ -1,3 +1,11 @@
+/**
+ * @author: giscafer ,https://github.com/giscafer
+ * @date: 2018-06-08 11:38:40
+ * @description: 杂乱的utils
+ */
+
+
+
 function isLebrain(text) {
     return (text.includes('勒布朗') || text.includes('詹姆斯') || text.includes('詹皇') || text.includes('James') || text.includes('james'));
 }
@@ -80,7 +88,7 @@ function getTransText(text) {
 
 // 使用介绍
 function replyIntro(text) {
-    return (text==='小泳助手' || text==='厚宾助手' || text==='giscafer小助手' || text==='giscafer助手');
+    return (text === '小泳助手' || text === '厚宾助手' || text === 'giscafer小助手' || text === 'giscafer助手');
 }
 
 // ip
@@ -140,8 +148,14 @@ function getCity(text) {
     return text.replace(/查询天气|查天气/g, '').trim();
 }
 
+// 查招聘信息
+function isFindJobs(text) {
+    return text.startsWith('查招聘信息');
+}
+
 
 module.exports = {
+    isFindJobs,
     getPoetryTitle,
     isSongPoetry,
     isPoetry,

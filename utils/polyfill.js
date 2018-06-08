@@ -3,7 +3,8 @@
  * @date: 2018-06-06 20:07:41
  * @description: polyfill
  */
-
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
 
 if (typeof Array.prototype.includes !== 'function') {
     Array.prototype.includes = function(v) {
