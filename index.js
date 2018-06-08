@@ -226,7 +226,7 @@ function textMsgHandler(msg) {
             sendText(result, msg);
         }
     }
-    // 查招聘信息
+    // 查招聘行情
     else if (_.isFindJobs(text)) {
         jobs().then(result => {
             sendText(result, msg);

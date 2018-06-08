@@ -20,7 +20,6 @@ function isJR(text) {
 
 // 翻译
 function isTranslate(text) {
-    console.log(zh2en(text) || en2zh(text) || zh2jp(text) || jp2zh(text) || zh2kor(text) || kor2zh(text))
     return (zh2en(text) || en2zh(text) || zh2jp(text) || jp2zh(text) || zh2kor(text) || kor2zh(text));
 }
 
@@ -148,9 +147,9 @@ function getCity(text) {
     return text.replace(/查询天气|查天气/g, '').trim();
 }
 
-// 查招聘信息
+// 查招聘行情
 function isFindJobs(text) {
-    return text.startsWith('查招聘信息');
+    return text.startsWith('查招聘行情');
 }
 
 
