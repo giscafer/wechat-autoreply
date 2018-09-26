@@ -23,6 +23,7 @@
     "homepage": "https://github.com/giscafer/wechat-autoreply#readme",
     "dependencies": {
         "babel-register": "6.26.0",
+        "baidu-aip-sdk": "^2.3.3",
         "cron": "1.3.0",
         "es6-promise": "^4.2.4",
         "isomorphic-fetch": "^2.2.1",

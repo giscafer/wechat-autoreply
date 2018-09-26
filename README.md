@@ -27,7 +27,7 @@ web微信自动回复，（web微信！！！非微信公众号，不管是在�
 
 - 查询ip归属地信息，回复 `查ip ip`，如 `查ip 221.193.207.29`
 
-- 关键词自动回复有：`query电话号码`等……
+- OCR 图片文字自动提取。管理员文本发送 `open easyocr confirm` 启用OCR功能，随后，群中所有的图片（不含表情）都会走OCR文字识别；管理员回复 `close easyocr` 即可关闭OCR功能，关闭后不再监听图片信息。OCR功能实现完整软件见：https://github.com/giscafer/easyocr
 
 - ……（持续更新）
 

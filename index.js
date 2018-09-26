@@ -16,7 +16,7 @@ const _ = require('./utils/util');
 const imgUtil = require('./utils/image');
 
 // modules
-const poetry = require('./modules/poetry');
+// const poetry = require('./modules/poetry');
 const getPicture = require('./modules/searchPic');
 const getTyphoonInfo = require('./modules/typhoon.js');
 const translate = require('./modules/translate');
@@ -26,9 +26,11 @@ const keyword = require('./modules/keyword');
 const jobs = require('./modules/jobs');
 
 let bot, loginUserName;
-let contactUsers = [],
-    // TODO：指定某些群或者对象可以起作用，其他人不行
-    contactNames = ['幸福里', '@长方体物质移动工程师'];
+// ocr启用状态
+let ocrOn = false;
+let contactUsers = [];
+// TODO：指定某些群或者对象可以起作用，其他人不行
+let contactNames = ['', 'test'];
 
 // 尝试获取本地登录数据，免扫码
 try {
@@ -96,6 +98,16 @@ bot.on('message', msg => {
             break;
         case bot.CONF.MSGTYPE_RECALLED:
             break;
+        case bot.CONF.MSGTYPE_IMAGE:
+            if (ocrOn) {
+                bot.getMsgImg(msg.MsgId).then(res => {
+                    let image = res.data.toString('base64');
+                    _.ocr(image).then(result => {
+                        sendText(result, msg);
+                    });
+                });
+            }
+            break;
     }
 });
 
@@ -143,9 +155,9 @@ function uploadMedia(img, msg) {
     if (img.includes('http')) {
         console.log(img);
         bot.sendMsg({
-                file: request(img),
-                filename: new Date().getTime() + '.jpg'
-            }, toUserName)
+            file: request(img),
+            filename: new Date().getTime() + '.jpg'
+        }, toUserName)
             .catch(err => {
                 let info = '图片获取失败：' + img;
                 console.log(info);
@@ -184,7 +196,7 @@ function textMsgHandler(msg) {
                 let imgUrl = imgUtil.getImageUrl(url);
                 uploadMedia(imgUrl, msg);
             }
-        }).catch(err => {})
+        }).catch(err => { })
     }
     // 台风查询
     else if (text.indexOf('查台风') === 0) {
@@ -244,10 +256,19 @@ function textMsgHandler(msg) {
             sendText(result, msg);
         }
     }
+    // ocr
+    else if (text.trim() === 'open easyocr') {
+        sendText('需要管理员启用OCR！', msg);
+    }
+    // 本人同意开启ocr
+    else if (text.startsWith('open easyocr confirm') && msg.FromUserName === loginUserName) {
+        ocrOn = true;
+        sendText('OCR 已开启（免费使用QPS不能大于2）', msg);
+    }
+    // 关闭 ocr
+    else if (text.startsWith('close easyocr') && msg.FromUserName === loginUserName) {
+        ocrOn = false;
+        sendText('OCR 已关闭', msg);
+    }
 
-    /* else if (_.isCurry(text)) {
-        uploadMedia('curry1.jpg', msg);
-    } else if (_.isJR(text)) {
-        uploadMedia('jr.png', msg);
-    } */
 }

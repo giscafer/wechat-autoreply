@@ -4,7 +4,7 @@
  * @description: 杂乱的utils
  */
 
-
+const ocrModule = require('../modules/ocr');
 
 function isLebrain(text) {
     return (text.includes('勒布朗') || text.includes('詹姆斯') || text.includes('詹皇') || text.includes('James') || text.includes('james'));
@@ -12,10 +12,6 @@ function isLebrain(text) {
 
 function isCurry(text) {
     return (text.includes('库里') || text.includes('小学生') || text.includes('curry') || text.includes('勇士') || text.includes('三分') || text.includes('3分'));
-}
-
-function isJR(text) {
-    return (text.includes('jr') || text.includes('JR') || text.includes('MVP'));
 }
 
 // 翻译
@@ -152,6 +148,27 @@ function isFindJobs(text) {
     return text.startsWith('查招聘行情');
 }
 
+// ocr
+function ocr(image) {
+    return new Promise((resolve, reject) => {
+        let wordstr = '';
+        ocrModule.execOrc(image).then((result) => {
+            // console.log(JSON.stringify(result));
+            if (!result.error_code) {
+                const { words_result } = result;
+                for (let row of words_result) {
+                    wordstr += row.words + '\n';
+                }
+            }
+            return resolve(wordstr);
+        }).catch((err) => {
+            // 如果发生网络错误
+            console.log(err);
+            return reject(err);
+        });
+    })
+
+}
 
 module.exports = {
     isFindJobs,
@@ -169,5 +186,5 @@ module.exports = {
     isTranslate,
     isLebrain,
     isCurry,
-    isJR
+    ocr
 }
