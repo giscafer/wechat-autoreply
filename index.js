@@ -16,7 +16,7 @@ const _ = require('./utils/util');
 const imgUtil = require('./utils/image');
 
 // modules
-// const poetry = require('./modules/poetry');
+// const poetry = require('./modules/poetry'); // 需要测试诗词的放开这个注释即可
 const getPicture = require('./modules/searchPic');
 const getTyphoonInfo = require('./modules/typhoon.js');
 const translate = require('./modules/translate');
