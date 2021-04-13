@@ -1,7 +1,6 @@
 # wechat-autoreply
 
-web微信自动回复，（web微信！！！非微信公众号，不管是在微信群聊还是微信私聊中，触发关键词，都会出现自动回复）
-
+web 微信自动回复，（web 微信！！！非微信公众号，不管是在微信群聊还是微信私聊中，触发关键词，都会出现自动回复）
 
 ## Feature
 
@@ -25,13 +24,11 @@ web微信自动回复，（web微信！！！非微信公众号，不管是在�
 
 - 查询天气信息，回复 `查天气 城市名称`，如`查天气 广州`
 
-- 查询ip归属地信息，回复 `查ip ip`，如 `查ip 221.193.207.29`
+- 查询 ip 归属地信息，回复 `查ip ip`，如 `查ip 221.193.207.29`
 
-- OCR 图片文字自动提取。管理员文本发送 `open easyocr confirm` 启用OCR功能，随后，群中所有的图片（不含表情）都会走OCR文字识别；管理员回复 `close easyocr` 即可关闭OCR功能，关闭后不再监听图片信息。OCR功能实现完整软件见：https://github.com/giscafer/easyocr
+- OCR 图片文字自动提取。管理员文本发送 `open easyocr confirm` 启用 OCR 功能，随后，群中所有的图片（不含表情）都会走 OCR 文字识别；管理员回复 `close easyocr` 即可关闭 OCR 功能，关闭后不再监听图片信息。OCR 功能实现完整软件见：https://github.com/giscafer/easyocr
 
 - ……（持续更新）
-
-
 
 ### Tips
 
@@ -46,7 +43,7 @@ let tangLen = 58; //唐诗，最大58
 ## Usage
 
 - npm install
-- node index 
+- node index
 
 运行后扫描二维码登录微信即可
 
@@ -58,18 +55,16 @@ let tangLen = 58; //唐诗，最大58
 
 ![screenshot5](./screenshot/screenshot5.jpg) ![screenshot2](./screenshot/screenshot2.jpg)
 
-
 ![screenshot3](./screenshot/screenshot3.jpg)
 
 ## Relation
 
+- 微信接口基于 [wechat4u](https://github.com/wechaty/wechaty)
 
-- 微信接口基于 [wechat4u](https://github.com/nodeWechat/wechat4u)
-
-- 唐诗56591首、宋词251000首，数据来源于 [chinese-poetry](https://github.com/chinese-poetry/chinese-poetry)
-
+- 唐诗 56591 首、宋词 251000 首，数据来源于 [chinese-poetry](https://github.com/chinese-poetry/chinese-poetry)
 
 ## License
+
 MIT
 
 ---

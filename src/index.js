@@ -26,13 +26,12 @@ const ip = require('./modules/ip');
 const weather = require('./modules/weather');
 const keyword = require('./modules/keyword');
 const jobs = require('./modules/jobs');
+const stockMsgHandler = require('./modules/stock');
 
 let bot, loginUserName;
 // ocr启用状态
 let ocrOn = false;
 let contactUsers = [];
-// TODO：指定某些群或者对象可以起作用，其他人不行
-let contactNames = ['', 'test'];
 
 // 尝试获取本地登录数据，免扫码
 try {
@@ -58,7 +57,7 @@ bot.on('uuid', (uuid) => {
   qrcode.generate('https://login.weixin.qq.com/l/' + uuid, {
     small: true,
   });
-  console.log('二维码链接：', 'https://login.weixin.qq.com/qrcode/' + uuid);
+  // console.log('二维码链接：', 'https://login.weixin.qq.com/qrcode/' + uuid);
 });
 bot.on('scan', onScan).on('error', onError);
 bot.on('error', (err) => {
@@ -80,10 +79,10 @@ bot.on('logout', () => {
 });
 
 bot.on('contacts-updated', (contacts) => {
-  if (contactUsers.length < contactNames) {
+  if (contactUsers.length < activeRooms) {
     console.log('contacts-updated');
-    for (const name of contactNames) {
-      let user = bot.Contact.getSearchUser('幸福里')[0].UserName;
+    for (const name of activeRooms) {
+      let user = bot.Contact.getSearchUser('幸福里1')[0].UserName;
       addUserList(user);
       console.log(`获取目标用户[${name}]成功: `, user);
     }
@@ -114,6 +113,7 @@ bot.on('message', (msg) => {
       break;
   }
 });
+
 bot.start().catch(async (e) => {
   console.error('Bot start() fail:', e);
   await bot.stop();
@@ -343,5 +343,7 @@ function textMsgHandler(msg) {
   ) {
     ocrOn = false;
     sendText('OCR 已关闭', msg);
+  } else {
+    stockMsgHandler(msg);
   }
 }
