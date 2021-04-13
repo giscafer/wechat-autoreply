@@ -16,6 +16,7 @@ const { FileBox } = require('file-box');
 // utils
 const _ = require('./utils/util');
 const imgUtil = require('./utils/image');
+const { RegType } = require('./contants');
 
 // modules
 // const poetry = require('./modules/poetry'); // 需要测试诗词的放开这个注释即可
@@ -74,7 +75,7 @@ bot.on('login', (user) => {
 
 // 登出成功
 bot.on('logout', () => {
-  console.log(`${user.name()} logout`);
+  console.log(`${user.name()} logouted`);
   fs.unlinkSync('./sync-data.json');
 });
 
@@ -145,15 +146,6 @@ function onScan(qrcode, status) {
   console.log(`[${status}] ${qrcodeImageUrl}\nScan QR Code above to log in: `);
 }
 
-function onLogin(user) {
-  console.log(`${user.name()} login`);
-  bot.say('Wechaty login').catch(console.error);
-}
-
-function onLogout(user) {
-  console.log(`${user.name()} logouted`);
-}
-
 function onError(e) {
   console.error('Bot error:', e);
   /*
@@ -174,62 +166,8 @@ function addUserList(user) {
 }
 
 function sendText(text, msg) {
-  console.log(msg);
+  console.log(`${talker.name}：${text}`);
   msg.say(text).catch(console.error);
-}
-
-/**获取信息发送对象 */
-function getSendUserName(msg) {
-  let toUserName = '';
-  if (msg.ToUserName.indexOf('@@') !== -1) {
-    toUserName = msg.ToUserName;
-  } else {
-    if (loginUserName === msg.FromUserName) {
-      toUserName = msg.ToUserName;
-    } else {
-      toUserName = msg.FromUserName;
-    }
-  }
-
-  return toUserName;
-}
-/**
- *
- * @param {string} img 图片名称
- */
-function uploadMedia(img, msg) {
-  let toUserName = getSendUserName(msg);
-  // 网络图片
-  if (img.includes('http')) {
-    console.log(img);
-    bot
-      .sendMsg(
-        {
-          file: request(img),
-          filename: new Date().getTime() + '.jpg',
-        },
-        toUserName,
-      )
-      .catch((err) => {
-        let info = '图片获取失败：' + img;
-        console.log(info);
-        console.log(err);
-        sendText(info, msg);
-      });
-    return;
-  } else {
-    // 本地图片
-    let path = `./img/${img}`;
-    let streamData = fs.createReadStream(path);
-    bot
-      .uploadMedia(streamData)
-      .then((res) => {
-        return bot.sendPic(res.mediaId, toUserName);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
 }
 
 /**文本信息识别 */
@@ -237,7 +175,6 @@ function textMsgHandler(msg) {
   let room = msg.room();
   let talker = msg.talker();
   let text = msg.text();
-  console.log(talker, text);
   if (!text) return;
   let index = text.indexOf('\n');
   if (index !== -1) {
@@ -343,7 +280,7 @@ function textMsgHandler(msg) {
   ) {
     ocrOn = false;
     sendText('OCR 已关闭', msg);
-  } else {
+  } else if (RegType.stock.test(text)) {
     stockMsgHandler(msg);
   }
 }

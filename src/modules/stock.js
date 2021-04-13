@@ -3,6 +3,7 @@ const { parseMsg, parseDate } = require('../utils/index');
 const xueqiu = require('../sites/xueqiu');
 const { activeRooms } = require('../config');
 const roomCacheData = new CacheData();
+const { RegType } = require('../contants');
 
 const debugFlag = true;
 
@@ -12,10 +13,12 @@ const debugFlag = true;
  */
 
 async function message(message) {
-  let room = message.room();
-  let from = message.from();
-  let text = message.text();
-  /* if (room || debugFlag) {
+  try {
+    let room = message.room();
+    let from = message.talker();
+    let text = message.text().replace(RegType.stock, '');
+    const sayer = room || message;
+    /* if (room || debugFlag) {
     const topic = await room.topic();
     if (activeRooms.indexOf(topic) >= 0 || debugFlag) {
       const roomKey = `_ROOM_${room.id}`;
@@ -23,34 +26,44 @@ async function message(message) {
         roomKeys.push(roomKey);
         roomCacheData.add(roomKey, room);
       } */
-  // 大盘
-  const overviewCodes = ['SH000001', 'SZ399001', 'SZ399006', 'SH000688'];
-  const [names, codes] = parseMsg(text, true);
-  let symbol = '';
-  if (codes.length > 0) {
-    symbol = codes.join(',');
-  } else if (text.indexOf('大盘') >= 0 || text.indexOf('指数') >= 0) {
-    symbol = overviewCodes.join(',');
-  }
-  if (symbol) {
-    xueqiu.quote(symbol).then(({ data }) => {
-      const { items } = data;
-      const msg = xueqiu.batchQuoteResp(items);
-      room.say(msg);
-    });
-  }
-  if (text.indexOf('龙虎榜') >= 0) {
-    const date = parseDate(text);
-    console.log(date);
-    xueqiu.longhu(date).then(({ data }) => {
-      console.log(data);
-      const msg = xueqiu.longhuRes(data, date);
-      room.say(msg);
-    });
-  }
-  /*   }
+    // 大盘
+    const overviewCodes = [
+      'SH000001',
+      'SH000300',
+      'SZ399001',
+      'SZ399006',
+      'SH000688',
+    ];
+    const [names, codes] = parseMsg(text, true);
+    let symbol = '';
+    if (codes.length > 0) {
+      symbol = codes.join(',');
+    } else if (text.indexOf('大盘') >= 0 || text.indexOf('指数') >= 0) {
+      symbol = overviewCodes.join(',');
+    }
+    if (symbol) {
+      xueqiu.quote(symbol).then((res) => {
+        console.log(res);
+        const { items } = res?.data || {};
+        const msg = xueqiu.batchQuoteResp(items);
+        sayer.say(msg);
+      });
+    }
+    if (text.indexOf('龙虎榜') >= 0) {
+      const date = parseDate(text);
+      console.log(date);
+      xueqiu.longhu(date).then(({ data }) => {
+        console.log(data);
+        const msg = xueqiu.longhuRes(data, date);
+        sayer.say(msg);
+      });
+    }
+    /*   }
     console.log(`Message: ${room}, ${from.name()}, ${text}`);
   } */
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 module.exports = message;
