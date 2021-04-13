@@ -17,6 +17,7 @@ const { FileBox } = require('file-box');
 const _ = require('./utils/util');
 const imgUtil = require('./utils/image');
 const { RegType } = require('./contants');
+const { activeRooms } = require('./config');
 
 // modules
 // const poetry = require('./modules/poetry'); // 需要测试诗词的放开这个注释即可
@@ -54,12 +55,12 @@ try {
 } */
 
 // 生成二维码
-bot.on('uuid', (uuid) => {
+/* bot.on('uuid', (uuid) => {
   qrcode.generate('https://login.weixin.qq.com/l/' + uuid, {
     small: true,
   });
   // console.log('二维码链接：', 'https://login.weixin.qq.com/qrcode/' + uuid);
-});
+}); */
 bot.on('scan', onScan).on('error', onError);
 bot.on('error', (err) => {
   console.log(err);
@@ -70,7 +71,7 @@ bot.on('error', (err) => {
 bot.on('login', (user) => {
   loginUserName = user.name();
   console.log(`${loginUserName} login`);
-  fs.writeFileSync('./sync-data.json', JSON.stringify(user));
+  // fs.writeFileSync('./sync-data.json', JSON.stringify(user));
 });
 
 // 登出成功
@@ -91,8 +92,20 @@ bot.on('contacts-updated', (contacts) => {
 });
 
 /**监听信息发送 */
-bot.on('message', (msg) => {
-  let MessageType = msg.type();
+bot.on('message', async (msg) => {
+  const MessageType = msg.type();
+  const room = msg.room();
+  const talker = msg.talker();
+  // 只在指定群里生效
+  if (talker?.name !== 'Nickbing Lao') {
+    if (room) {
+      const topic = await room.topic();
+      if (activeRooms.indexOf(topic) === -1) {
+        return;
+      }
+    }
+  }
+
   switch (MessageType) {
     case bot.Message.Type.Contact:
       break;
@@ -123,12 +136,6 @@ bot.start().catch(async (e) => {
 
 /**
  *
- * 4. You are all set. ;-]
- *
- */
-
-/**
- *
  * 5. Define Event Handler Functions for:
  *  `scan`, `login`, `logout`, `error`, and `message`
  *
@@ -154,19 +161,9 @@ function onError(e) {
   }
   */
 }
-// 判断接收是否为监听的群
-
-function includesUser(id) {
-  return contactUsers.indexOf(id) !== -1;
-}
-
-function addUserList(user) {
-  if (includesUser(user)) return;
-  contactUsers.push(user);
-}
 
 function sendText(text, msg) {
-  console.log(`${talker.name}：${text}`);
+  console.log(`${msg.talker().name}：${text}`);
   msg.say(text).catch(console.error);
 }
 

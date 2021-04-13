@@ -8,7 +8,13 @@ const tempCodes = [];
 const regex = /((202\d)[-\/\_])?(\d{1,2})[-\/\_](\d{1,2})/;
 
 function parseMsg(msg, uppercase = false) {
-  let [names, codes] = parseCode(msg);
+  let names = [];
+  let codes = [];
+  if (/^[0,3,6]\d{5}$/.test(msg)) {
+    // 当输入为纯数字，且长度等于6，即为股票代码
+    codes = [msg];
+  }
+  [names, codes] = parseCode(msg);
   codes = codes.map((code) => {
     let prefix = code.substr(0, 1) === '6' ? 'sh' : 'sz';
     return `${uppercase ? prefix.toUpperCase() : prefix}${code}`;

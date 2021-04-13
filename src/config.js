@@ -1,4 +1,4 @@
 //指定某些群或者对象可以起作用，其他人不行
-const activeRooms = ['BOT_TEST', '测试群聊'];
+const activeRooms = ['回本销号互助群', 'ClownHub', 'LeekHub'];
 
 module.exports = { activeRooms };
