@@ -43,7 +43,6 @@ async function message(message) {
     }
     if (symbol) {
       xueqiu.quote(symbol).then((res) => {
-        console.log(res);
         const { items } = res?.data || {};
         const msg = xueqiu.batchQuoteResp(items);
         sayer.say(msg);
@@ -52,8 +51,11 @@ async function message(message) {
     if (text.indexOf('龙虎榜') >= 0) {
       const date = parseDate(text);
       console.log(date);
-      xueqiu.longhu(date).then(({ data }) => {
-        console.log(data);
+      xueqiu.longhu(date).then((res) => {
+        const data = res?.data;
+        if (!data) {
+          return;
+        }
         const msg = xueqiu.longhuRes(data, date);
         sayer.say(msg);
       });

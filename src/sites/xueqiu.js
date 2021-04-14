@@ -57,7 +57,7 @@ class Xueqiu {
     const url = `https://stock.xueqiu.com/v5/stock/batch/quote.json?symbol=${symbol}&_=${timestamp()}`;
     return this.request(url);
   }
-  batchQuoteResp(items) {
+  batchQuoteResp(items = []) {
     return items
       .map(({ market, quote }) => {
         const { status } = market;

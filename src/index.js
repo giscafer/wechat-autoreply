@@ -180,14 +180,19 @@ function textMsgHandler(msg) {
   text = text.trim();
   // 图片搜索
   if (text.indexOf('图 ') === 0) {
-    msg.say('网络搜索中……');
+    msg.say('随机图片网络搜索中……');
     getPicture(text.replace('图', '').replace('图片', '').trim())
       .then(async (url) => {
         if (url) {
           let imgUrl = imgUtil.getImageUrl(url);
           console.log(url);
           const fileBox = FileBox.fromUrl(imgUrl);
-          await msg.say(fileBox);
+          try {
+            await msg.say(fileBox);
+          } catch (err) {
+            await msg.say('图片发送错误：' + imgUrl);
+            console.log('图片发送错误', err);
+          }
         }
       })
       .catch((err) => {
@@ -235,10 +240,11 @@ function textMsgHandler(msg) {
   }
   // 唐诗宋词查询
   else if (_.isPoetry(text)) {
-    let result = poetry(text);
+    sendText('已关闭该功能', msg);
+    /*  let result = poetry(text);
     if (result) {
       sendText(result, msg);
-    }
+    } */
   }
   // 查招聘行情
   else if (_.isFindJobs(text)) {

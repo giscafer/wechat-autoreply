@@ -132,7 +132,7 @@ function getPoetryTitle(text) {
 
 function introInfo() {
   return `
-    LeekHub 小助手使用说明↓：
+    【LeekHub小助手】使用说明：
 
     0.股票信息：回复 “@或书名号 + 股票名字”，如：@三一重工；
 
