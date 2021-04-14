@@ -61,11 +61,8 @@ try {
   });
   // console.log('二维码链接：', 'https://login.weixin.qq.com/qrcode/' + uuid);
 }); */
-bot.on('scan', onScan).on('error', onError);
-bot.on('error', (err) => {
-  console.log(err);
-  console.log(bot.state);
-});
+bot.on('scan', onScan);
+bot.on('error', onError);
 
 // 登录成功
 bot.on('login', (user) => {

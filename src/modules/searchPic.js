@@ -34,7 +34,9 @@ function getPicture(key) {
         });
         let targetImgUrl = '';
         if (imgUrlList.length > 0) {
-          targetImgUrl = imgUrlList[randomIndex(imgUrlList.length - 1)];
+          const randonNum = randomIndex(imgUrlList.length - 1);
+          console.log(randonNum, imgUrlList.length);
+          targetImgUrl = imgUrlList[randonNum];
         }
         resolve(targetImgUrl);
       })
