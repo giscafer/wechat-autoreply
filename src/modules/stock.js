@@ -45,6 +45,7 @@ async function message(message) {
       xueqiu.quote(symbol).then((res) => {
         const { items } = res?.data || {};
         const msg = xueqiu.batchQuoteResp(items);
+        if (!msg) return;
         sayer.say(msg);
       });
     }
@@ -57,6 +58,7 @@ async function message(message) {
           return;
         }
         const msg = xueqiu.longhuRes(data, date);
+        if (!msg) return;
         sayer.say(msg);
       });
     }

@@ -164,6 +164,7 @@ function onError(e) {
 
 function sendText(text, msg) {
   console.log(`${msg.talker().name}：${text}`);
+  if (!text) return;
   msg.say(text).catch(console.error);
 }
 
