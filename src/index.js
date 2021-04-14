@@ -37,7 +37,7 @@ let contactUsers = [];
 
 // 尝试获取本地登录数据，免扫码
 try {
-  bot = new Wechaty();
+  bot = new Wechaty({ name: 'leekhub' });
   // bot = new Wechat(require('./sync-data.json'));
 } catch (e) {
   console.log(e);
