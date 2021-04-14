@@ -181,12 +181,16 @@ function textMsgHandler(msg) {
   text = text.trim();
   // 图片搜索
   if (text.indexOf('图 ') === 0) {
-    msg.say('随机图片网络搜索中……');
+    msg.say('随机图片搜索中……');
     getPicture(text.replace('图', '').replace('图片', '').trim())
-      .then(async (url) => {
+      .then((url) => {
         if (url) {
-          let imgUrl = imgUtil.getImageUrl(url);
           console.log(url);
+          let imgUrl = imgUtil.getImageUrl(url);
+          if (!imgUrl) {
+            msg.say('搜索的图片解析失败：' + url);
+            return;
+          }
           try {
             const fileBox = FileBox.fromUrl(imgUrl);
             msg.say(fileBox);
