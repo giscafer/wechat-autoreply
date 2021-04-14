@@ -187,11 +187,11 @@ function textMsgHandler(msg) {
         if (url) {
           let imgUrl = imgUtil.getImageUrl(url);
           console.log(url);
-          const fileBox = FileBox.fromUrl(imgUrl);
           try {
-            await msg.say(fileBox);
+            const fileBox = FileBox.fromUrl(imgUrl);
+            msg.say(fileBox);
           } catch (err) {
-            await msg.say('图片发送错误：' + imgUrl);
+            msg.say('图片发送错误：' + imgUrl);
             console.log('图片发送错误', err);
           }
         }
