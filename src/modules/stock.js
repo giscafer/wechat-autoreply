@@ -51,7 +51,6 @@ async function message(message) {
     }
     if (text.indexOf('龙虎榜') >= 0) {
       const date = parseDate(text);
-      console.log(date);
       xueqiu.longhu(date).then((res) => {
         const data = res?.data;
         if (!data) {
@@ -66,7 +65,7 @@ async function message(message) {
     console.log(`Message: ${room}, ${from.name()}, ${text}`);
   } */
   } catch (err) {
-    console.log(err);
+    console.log(text, err);
   }
 }
 
