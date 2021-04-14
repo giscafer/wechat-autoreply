@@ -182,7 +182,8 @@ function textMsgHandler(msg) {
   // 图片搜索
   if (text.indexOf('图 ') === 0) {
     msg.say('随机图片搜索中……');
-    getPicture(text.replace('图', '').replace('图片', '').trim())
+    const keyword = text.replace('图', '').replace('图片', '').trim();
+    getPicture(keyword)
       .then((url) => {
         if (url) {
           console.log(url);
@@ -198,6 +199,8 @@ function textMsgHandler(msg) {
             msg.say('图片发送错误：' + imgUrl);
             console.log('图片发送错误', err);
           }
+        } else {
+          msg.say(`无相关[${keyword}]图片!`);
         }
       })
       .catch((err) => {
