@@ -201,10 +201,14 @@ function textMsgHandler(msg) {
   }
   // 台风查询
   else if (text.indexOf('查台风') === 0) {
-    getTyphoonInfo().then((text) => {
-      text = text || '当前没有台风！';
-      sendText(text, msg);
-    });
+    getTyphoonInfo()
+      .then((text) => {
+        text = text || '当前没有台风！';
+        sendText(text, msg);
+      })
+      .catch((err) => {
+        sendText('台风查询失败', msg);
+      });
   }
   // 词典翻译
   else if (_.isTranslate(text)) {
@@ -227,16 +231,24 @@ function textMsgHandler(msg) {
   else if (_.isIpQuery(text)) {
     let ipStr = _.getIP(text);
     // console.log(ipStr)
-    ip(ipStr).then((result) => {
-      sendText(result, msg);
-    });
+    ip(ipStr)
+      .then((result) => {
+        sendText(result, msg);
+      })
+      .catch((err) => {
+        sendText('ip查询失败', msg);
+      });
   }
   // 天气信息
   else if (_.isWeatherQuery(text)) {
     let cityName = _.getCity(text);
-    weather(cityName).then((result) => {
-      sendText(result, msg);
-    });
+    weather(cityName)
+      .then((result) => {
+        sendText(result, msg);
+      })
+      .catch((err) => {
+        sendText('天气查询失败', msg);
+      });
   }
   // 唐诗宋词查询
   else if (_.isPoetry(text)) {
