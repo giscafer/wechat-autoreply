@@ -64,17 +64,20 @@ class Xueqiu {
         const {
           open,
           last_close,
+          high,
           current,
           name,
           percent,
           turnover_rate,
           amplitude,
+          amount,
           symbol,
         } = quote;
         return [
-          `${percent >= 0 ? '🔴' : '🟢'} ${name}  ( ${status} )`,
+          `${percent >= 0 ? '🍖' : '🌱'} ${name}  ( ${status} )`,
           `现价 : ${current}\n涨幅 : ${percent}%`,
-          `今开 : ${open} 昨收 : ${last_close}`,
+          `成交额 : ${amount}%`,
+          `今开 : ${open} 最高 : ${high} 昨收 : ${last_close}`,
           turnover_rate
             ? `换手 : ${turnover_rate}% 振幅 : ${amplitude}% `
             : `振幅 : ${amplitude}% `,

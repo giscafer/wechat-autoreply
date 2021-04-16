@@ -72,3 +72,5 @@ MIT
 > [giscafer.com](http://giscafer.com) &nbsp;&middot;&nbsp;
 > GitHub [@giscafer](https://github.com/giscafer) &nbsp;&middot;&nbsp;
 > Weibo [@Nickbing Lao](https://weibo.com/laohoubin)
+
+https://console.cloud.tencent.com/lighthouse/instance/index
