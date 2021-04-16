@@ -76,11 +76,15 @@ class Xueqiu {
         return [
           `${percent >= 0 ? '🍖' : '🌱'} ${name}  ( ${status} )`,
           `现价 : ${current}\n涨幅 : ${percent}%`,
-          `成交额 : ${amount}%`,
-          `今开 : ${open} 最高 : ${high} 昨收 : ${last_close}`,
+
+          `今开 : ${open} ,最高 : ${high} ,昨收 : ${last_close}`,
           turnover_rate
-            ? `换手 : ${turnover_rate}% 振幅 : ${amplitude}% `
-            : `振幅 : ${amplitude}% `,
+            ? `换手 : ${turnover_rate}% ,振幅 : ${amplitude}% ,成交额 : ${(
+                amount / 100000000
+              ).toFixed(2)}亿`
+            : `振幅 : ${amplitude}% ,成交额 : ${(amount / 100000000).toFixed(
+                2,
+              )}亿`,
           `https://xueqiu.com/S/${symbol}`,
         ].join('\n');
       })
