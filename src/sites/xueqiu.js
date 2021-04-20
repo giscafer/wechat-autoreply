@@ -1,5 +1,7 @@
 const axiosInstance = require('../utils/request');
 const { timestamp } = require('../utils/index');
+const randomHeader = require('../utils/randomHeader');
+
 const defaltHeaders = {
   Accept:
     'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -19,6 +21,18 @@ const defaltHeaders = {
 class Xueqiu {
   cookies = `device_id=${Math.random().toString(36).substring(2, 15)}`;
   constructor() {
+    this.init();
+  }
+
+  get headers() {
+    return {
+      ...defaltHeaders,
+      ...randomHeader(),
+      Cookie: this.cookies,
+    };
+  }
+
+  init() {
     axiosInstance.get(`https://xueqiu.com/`).then((response) => {
       const cookiesHeader = response.headers['set-cookie'];
       this.cookies +=
@@ -31,12 +45,7 @@ class Xueqiu {
           .join(';') + ';';
     });
   }
-  get headers() {
-    return {
-      ...defaltHeaders,
-      Cookie: this.cookies,
-    };
-  }
+
   request(url, withHeaders = true) {
     return axiosInstance
       .get(
@@ -47,8 +56,15 @@ class Xueqiu {
             }
           : {},
       )
-      .then((response) => response.data)
+      .then((response) => {
+        // 处理cookie 问题
+        if (response.status === 400) {
+          this.init();
+        }
+        return response.data;
+      })
       .catch((err) => {
+        this.init();
         console.log(err);
       });
   }
@@ -71,20 +87,20 @@ class Xueqiu {
           turnover_rate,
           amplitude,
           amount,
+          volume,
           symbol,
         } = quote;
         return [
           `${percent >= 0 ? '🍖' : '🌱'} ${name}  ( ${status} )`,
-          `现价 : ${current}\n涨幅 : ${percent}%`,
+          `涨幅 : ${percent}%\n现价 : ${current}`,
 
-          `今开 : ${open} ,最高 : ${high} ,昨收 : ${last_close}`,
+          `今开 : ${open}\n今日最高 : ${high} \n昨收 : ${last_close}`,
           turnover_rate
-            ? `换手 : ${turnover_rate}% ,振幅 : ${amplitude}% ,成交额 : ${(
-                amount / 100000000
-              ).toFixed(2)}亿`
-            : `振幅 : ${amplitude}% ,成交额 : ${(amount / 100000000).toFixed(
-                2,
-              )}亿`,
+            ? `换手 : ${turnover_rate}% \n振幅 : ${amplitude}% `
+            : `振幅 : ${amplitude}% `,
+          `成交量 : ${(volume / 1000000).toFixed(2)}万手\n成交额 : ${(
+            amount / 100000000
+          ).toFixed(2)}亿`,
           `https://xueqiu.com/S/${symbol}`,
         ].join('\n');
       })
