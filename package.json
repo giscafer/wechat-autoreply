@@ -38,6 +38,6 @@
     "request": "^2.87.0",
     "urlencode": "^1.1.0",
     "wechaty": "^0.60.3",
-    "wechaty-puppet-wechat": "^0.27.1"
+    "wechaty-puppet-wechat": "0.28.1"
   }
 }
