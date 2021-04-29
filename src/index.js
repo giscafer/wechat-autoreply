@@ -179,7 +179,6 @@ function textMsgHandler(msg) {
   text = text.trim();
   // 图片搜索
   if (text.indexOf('图 ') === 0) {
-    msg.say('随机图片搜索中……');
     const keyword = text.replace('图', '').replace('图片', '').trim();
     if (keyword.indexOf('密集') !== -1 || keyword.indexOf('恐惧') !== -1) {
       msg.say('记过处分+1次');
@@ -189,6 +188,7 @@ function textMsgHandler(msg) {
       msg.say('做人请不要太袁新生！！！');
       return;
     }
+    msg.say('随机图片搜索中……');
     getPicture(keyword)
       .then((url) => {
         if (url) {
