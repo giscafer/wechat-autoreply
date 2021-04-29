@@ -185,6 +185,10 @@ function textMsgHandler(msg) {
       msg.say('记过处分+1次');
       return;
     }
+    if (keyword.indexOf('袁新生') !== -1) {
+      msg.say('做人请不要太袁新生！！！');
+      return;
+    }
     getPicture(keyword)
       .then((url) => {
         if (url) {
