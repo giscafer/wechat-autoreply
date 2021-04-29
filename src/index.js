@@ -181,6 +181,10 @@ function textMsgHandler(msg) {
   if (text.indexOf('图 ') === 0) {
     msg.say('随机图片搜索中……');
     const keyword = text.replace('图', '').replace('图片', '').trim();
+    if (keyword.indexOf('密集') !== -1 || keyword.indexOf('恐惧') !== -1) {
+      msg.say('记过处分+1次');
+      return;
+    }
     getPicture(keyword)
       .then((url) => {
         if (url) {
