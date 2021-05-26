@@ -12,7 +12,7 @@ const debugFlag = true;
  * @param {*} message
  */
 
-async function message(message) {
+async function message(message, isSimple = false) {
   try {
     const room = message.room();
     const from = message.talker();
@@ -44,7 +44,7 @@ async function message(message) {
     if (symbol) {
       xueqiu.quote(symbol).then((res) => {
         const { items } = res?.data || {};
-        const msg = xueqiu.batchQuoteResp(items);
+        const msg = xueqiu.batchQuoteResp(items, isSimple);
         if (!msg) return;
         sayer.say(msg);
       });

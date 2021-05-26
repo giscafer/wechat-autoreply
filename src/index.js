@@ -310,6 +310,6 @@ function textMsgHandler(msg) {
     ocrOn = false;
     sendText('OCR 已关闭', msg);
   } else if (RegType.stock.test(text)) {
-    stockMsgHandler(msg);
+    stockMsgHandler(msg, /^@/.test(text));
   }
 }
