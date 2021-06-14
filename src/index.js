@@ -304,18 +304,24 @@ function textMsgHandler(msg) {
         activeRooms.push(roomName);
       }
       sendText('LeekHub Robot 已开启，欢迎使用！', msg);
+    } else {
+      sendText('抱歉，您没有权限！', msg);
     }
   }
   // 关闭 bot
-  else if (
-    text.startsWith('close bot') &&
-    (talker.payload.name === adminName || talker.payload.name === loginUserName)
-  ) {
-    const roomName = room.payload.topic;
-    const index = activeRooms.indexOf(roomName);
-    activeRooms.splice(index, 1);
-    // console.log('activeRooms splice=', activeRooms);
-    sendText('LeekHub Robot 已关闭', msg);
+  else if (text.startsWith('close bot')) {
+    if (
+      talker.payload.name === adminName ||
+      talker.payload.name === loginUserName
+    ) {
+      const roomName = room.payload.topic;
+      const index = activeRooms.indexOf(roomName);
+      activeRooms.splice(index, 1);
+      // console.log('activeRooms splice=', activeRooms);
+      sendText('LeekHub Robot 已关闭', msg);
+    } else {
+      sendText('抱歉，您没有权限！', msg);
+    }
   } else if (RegType.stock.test(text)) {
     stockMsgHandler(msg, RegType.stockPrefix.test(text));
   }
