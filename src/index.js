@@ -35,6 +35,8 @@ let bot, loginUserName;
 let ocrOn = false;
 let contactUsers = [];
 
+const adminName = 'Nickbing Lao';
+
 // 尝试获取本地登录数据，免扫码
 try {
   console.log('new');
@@ -78,16 +80,16 @@ bot.on('logout', () => {
   fs.unlinkSync('./sync-data.json');
 });
 
-bot.on('contacts-updated', (contacts) => {
+/* bot.on('contacts-updated', (contacts) => {
   if (contactUsers.length < activeRooms) {
     console.log('contacts-updated');
     for (const name of activeRooms) {
-      let user = bot.Contact.getSearchUser('幸福里1')[0].UserName;
+      let user = bot.Contact.getSearchUser('aaa')[0].UserName;
       addUserList(user);
       console.log(`获取目标用户[${name}]成功: `, user);
     }
   }
-});
+}); */
 
 /**监听信息发送 */
 bot.on('message', async (msg) => {
@@ -95,10 +97,11 @@ bot.on('message', async (msg) => {
   const room = msg.room();
   const talker = msg.talker();
   // 只在指定群里生效
-  if (talker?.name !== 'Nickbing Lao') {
+  // console.log('activeRooms=', activeRooms);
+  if (talker?.payload?.name !== adminName) {
     if (room) {
-      const topic = await room.topic();
-      if (activeRooms.indexOf(topic) === -1) {
+      const roomName = room.payload.topic;
+      if (activeRooms.indexOf(roomName) === -1) {
         return;
       }
     }
@@ -290,26 +293,30 @@ function textMsgHandler(msg) {
       sendText(result, msg);
     }
   }
-  // ocr
-  else if (text.trim() === 'open easyocr') {
-    sendText('需要管理员启用OCR！', msg);
+  // 本人同意开启
+  else if (text.startsWith('open bot')) {
+    const roomName = room.payload.topic;
+    if (
+      talker.payload.name === adminName ||
+      talker.payload.name === loginUserName
+    ) {
+      if (activeRooms.indexOf(roomName) === -1) {
+        activeRooms.push(roomName);
+      }
+      sendText('LeekHub Robot 已开启，欢迎使用！', msg);
+    }
   }
-  // 本人同意开启ocr
+  // 关闭 bot
   else if (
-    text.startsWith('open easyocr confirm') &&
-    msg.FromUserName === loginUserName
+    text.startsWith('close bot') &&
+    (talker.payload.name === adminName || talker.payload.name === loginUserName)
   ) {
-    ocrOn = true;
-    sendText('OCR 已开启（免费使用QPS不能大于2）', msg);
-  }
-  // 关闭 ocr
-  else if (
-    text.startsWith('close easyocr') &&
-    msg.FromUserName === loginUserName
-  ) {
-    ocrOn = false;
-    sendText('OCR 已关闭', msg);
+    const roomName = room.payload.topic;
+    const index = activeRooms.indexOf(roomName);
+    activeRooms.splice(index, 1);
+    // console.log('activeRooms splice=', activeRooms);
+    sendText('LeekHub Robot 已关闭', msg);
   } else if (RegType.stock.test(text)) {
-    stockMsgHandler(msg, /^@/.test(text));
+    stockMsgHandler(msg, RegType.stockPrefix.test(text));
   }
 }
