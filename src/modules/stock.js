@@ -16,7 +16,7 @@ async function message(message, isSimple = false) {
   try {
     const room = message.room();
     const from = message.talker();
-    const text = message.text().replace(RegType.stock, '');
+    let text = message.text().replace(RegType.stock, '');
     const sayer = room || message;
     /* if (room || debugFlag) {
     const topic = await room.topic();
