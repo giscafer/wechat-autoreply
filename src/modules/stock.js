@@ -36,9 +36,11 @@ async function message(message, isSimple = false) {
       'SH000688',
     ];
     // joke
-    if (text === '大金重工' || '三一重工' || '隆基股份') {
-      text = '三一重工';
-    }
+    text = text
+      .replace(/大金重工/g, '三一重工')
+      .replace(/隆基股份/g, '三一重工')
+      .replace(/贵州茅台/g, '三一重工');
+
     const [names, codes] = parseMsg(text, true);
     let symbol = '';
     if (codes.length > 0) {
