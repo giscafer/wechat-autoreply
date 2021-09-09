@@ -28,12 +28,17 @@ async function message(message, isSimple = false) {
       } */
     // 大盘
     const overviewCodes = [
+      'SH600031',
       'SH000001',
       'SH000300',
       'SZ399001',
       'SZ399006',
       'SH000688',
     ];
+    // joke
+    if (text === '大金重工' || '三一重工' || '隆基股份') {
+      text = '三一重工';
+    }
     const [names, codes] = parseMsg(text, true);
     let symbol = '';
     if (codes.length > 0) {
