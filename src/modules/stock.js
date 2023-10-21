@@ -1,11 +1,24 @@
-const CacheData = require('../utils/cache');
+// const CacheData = require('../utils/cache');
 const { parseMsg, parseDate } = require('../utils/index');
 const xueqiu = require('../sites/xueqiu');
-const { activeRooms } = require('../config');
-const roomCacheData = new CacheData();
+// const { activeRooms } = require('../config');
+// const roomCacheData = new CacheData();
 const { RegType } = require('../contants');
 
 const debugFlag = true;
+
+// 大盘
+const overviewCodes = [
+  'SH600031',
+  'SH000001',
+  'SH000300',
+  'SZ399001',
+  'SZ399006',
+  'SH000688',
+];
+
+// 我的持仓
+const myCodes = ['SH600036', 'SH002142', 'SH601012', 'SH000858'];
 
 /**
  * 股票消息处理
@@ -26,8 +39,6 @@ async function message(message, isSimple = false) {
         roomKeys.push(roomKey);
         roomCacheData.add(roomKey, room);
       } */
-    // 我的持仓
-    const myCodes = ['SH600036', 'SH002142', 'SH601012', 'SH000858'];
 
     const [names, codes] = parseMsg(text, true);
     let symbol = '';
