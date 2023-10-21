@@ -1,39 +1,43 @@
 {
-    "name": "wechat-autoreply",
-    "version": "1.2.2",
-    "description": "web微信自动回复",
-    "main": "index.js",
-    "scripts": {
-        "start": "node index",
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/giscafer/wechat-autoreply.git"
-    },
-    "keywords": [
-        "wechat",
-        "autoreplay"
-    ],
-    "author": "Nickbing Lao<giscafer@outlook.com>",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/giscafer/wechat-autoreply/issues"
-    },
-    "homepage": "https://github.com/giscafer/wechat-autoreply#readme",
-    "dependencies": {
-        "babel-register": "6.26.0",
-        "baidu-aip-sdk": "^2.3.3",
-        "cron": "1.3.0",
-        "es6-promise": "^4.2.4",
-        "isomorphic-fetch": "^2.2.1",
-        "moment": "^2.22.2",
-        "node-ipcity": "^0.1.1",
-        "node-typhoon": "^1.1.0",
-        "qrcode-terminal": "0.12.0",
-        "querystring": "^0.2.0",
-        "request": "^2.87.0",
-        "urlencode": "^1.1.0",
-        "wechat4u": "^0.7.6"
-    }
+  "name": "wechat-autoreply",
+  "version": "2.0.0",
+  "description": "web微信自动回复",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/giscafer/wechat-autoreply.git"
+  },
+  "keywords": [
+    "wechat",
+    "autoreplay"
+  ],
+  "author": "Nickbing Lao<giscafer@outlook.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/giscafer/wechat-autoreply/issues"
+  },
+  "homepage": "https://github.com/giscafer/wechat-autoreply#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "babel-register": "6.26.0",
+    "baidu-aip-sdk": "^2.3.3",
+    "cron": "1.3.0",
+    "es6-promise": "^4.2.4",
+    "file-box": "^0.16.8",
+    "https": "^1.0.0",
+    "isomorphic-fetch": "^2.2.1",
+    "moment": "^2.29.1",
+    "node-ipcity": "^0.1.1",
+    "node-typhoon": "^1.1.0",
+    "qrcode-terminal": "0.12.0",
+    "querystring": "^0.2.0",
+    "request": "^2.87.0",
+    "urlencode": "^1.1.0",
+    "wechaty": "^1.20.2",
+    "wechaty-puppet-wechat": "^1.18.4"
+  }
 }
