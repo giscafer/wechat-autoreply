@@ -152,7 +152,9 @@ function introInfo() {
 
     8.查询ip归属地：如 “查ip 221.193.207.29”；
 
-    友情赞助>> https://github.com/giscafer/buy-me-a-coffee（鼓励更多功能扩展……）
+    源码>> https://github.com/giscafer/wechat-autoreply
+
+    友情赞助>> https://github.com/giscafer/buy-me-a-coffee
     `;
 }
 
