@@ -33,7 +33,7 @@ let bot, loginUserName;
 let ocrOn = false;
 let contactUsers = [];
 
-const adminName = 'Nickbing Lao';
+const adminName = 'Nicky Lao';
 
 // 尝试获取本地登录数据，免扫码
 // bot = new Wechaty({ name: 'leekhub' });
@@ -179,6 +179,7 @@ function textMsgHandler(msg) {
     text = text.substr(index + 1, text.length);
   }
   text = text.trim();
+  console.log(`${talker.name()}：${text}`);
   // 图片搜索
   if (text.indexOf('图 ') === 0) {
     const keyword = text.replace('图', '').replace('图片', '').trim();
@@ -292,8 +293,9 @@ function textMsgHandler(msg) {
       sendText(result, msg);
     }
   }
+
   // 本人同意开启
-  else if (text.startsWith('open bot')) {
+  else if (text.startsWith('#上班')) {
     const roomName = room.payload.topic;
     if (
       talker.payload.name === adminName ||
@@ -308,7 +310,7 @@ function textMsgHandler(msg) {
     }
   }
   // 关闭 bot
-  else if (text.startsWith('close bot')) {
+  else if (text.startsWith('#下班')) {
     if (
       talker.payload.name === adminName ||
       talker.payload.name === loginUserName
@@ -316,12 +318,12 @@ function textMsgHandler(msg) {
       const roomName = room.payload.topic;
       const index = activeRooms.indexOf(roomName);
       activeRooms.splice(index, 1);
-      // console.log('activeRooms splice=', activeRooms);
+
       sendText('LeekHub Robot 已关闭', msg);
     } else {
       sendText('抱歉，您没有权限！', msg);
     }
   } else if (RegType.stock.test(text)) {
-    stockMsgHandler(msg, RegType.stockPrefix.test(text));
+    stockMsgHandler(msg, text);
   }
 }

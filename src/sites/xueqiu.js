@@ -73,7 +73,7 @@ class Xueqiu {
     const url = `https://stock.xueqiu.com/v5/stock/batch/quote.json?symbol=${symbol}&_=${timestamp()}`;
     return this.request(url);
   }
-  batchQuoteResp(items = [], isSimple = true) {
+  batchQuoteResp(items = [], type = 0) {
     return items
       .map(({ market, quote }) => {
         const { status } = market;
@@ -90,7 +90,12 @@ class Xueqiu {
           volume,
           symbol,
         } = quote;
-        if (isSimple) {
+        if (type === 0) {
+          return [
+            `${symbol.substr(2)}：${percent >= 0 ? '+' : ''}${percent}%`,
+          ].join('，');
+        }
+        if (type === 1) {
           return [
             `${percent >= 0 ? '🍖' : '🌱'} ${name}：现价 ${current}`,
             `涨幅 ${percent}%`,

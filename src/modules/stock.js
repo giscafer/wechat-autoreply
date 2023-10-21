@@ -9,7 +9,6 @@ const debugFlag = true;
 
 // 大盘
 const overviewCodes = [
-  'SH600031',
   'SH000001',
   'SH000300',
   'SZ399001',
@@ -18,14 +17,17 @@ const overviewCodes = [
 ];
 
 // 我的持仓
-const myCodes = ['SH600036', 'SH002142', 'SH601012', 'SH000858'];
+const myCodes = ['SH600036', 'SZ002142', 'SH601012', 'SZ000858'];
 
 /**
  * 股票消息处理
  * @param {*} message
  */
 
-async function message(message, isSimple = false) {
+async function message(message, text) {
+  const simpleMode = RegType.stockPrefix.test(text);
+  const numberMode = RegType.stockPrefix2.test(text);
+  const type = simpleMode ? 1 : numberMode ? 0 : 2;
   try {
     const room = message.room();
     const from = message.talker();
@@ -42,6 +44,7 @@ async function message(message, isSimple = false) {
 
     const [names, codes] = parseMsg(text, true);
     let symbol = '';
+    console.log(text, codes);
     if (codes.length > 0) {
       symbol = codes.join(',');
     } else if (text.indexOf('大盘') >= 0 || text.indexOf('指数') >= 0) {
@@ -52,7 +55,7 @@ async function message(message, isSimple = false) {
     if (symbol) {
       xueqiu.quote(symbol).then((res) => {
         const { items } = res?.data || {};
-        const msg = xueqiu.batchQuoteResp(items, isSimple);
+        const msg = xueqiu.batchQuoteResp(items, type);
         if (!msg) return;
         sayer.say(msg);
       });
