@@ -4,7 +4,7 @@ web 微信自动回复，（web 微信！！！非微信公众号，不管是在
 
 ## Feature
 
-- 回复：`giscafer助手` 可查看功能使用说明
+- 回复：`LeekHub小助手` 可查看功能使用说明
 
 - 支持微信图片搜索，自动回复图片
 
@@ -71,6 +71,4 @@ MIT
 
 > [giscafer.com](http://giscafer.com) &nbsp;&middot;&nbsp;
 > GitHub [@giscafer](https://github.com/giscafer) &nbsp;&middot;&nbsp;
-> Weibo [@Nickbing Lao](https://weibo.com/nicky_lao)
-
-https://console.cloud.tencent.com/lighthouse/instance/index
+> X [@nicky_lao](https://weibo.com/nicky_lao)

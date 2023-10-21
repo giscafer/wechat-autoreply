@@ -26,20 +26,8 @@ async function message(message, isSimple = false) {
         roomKeys.push(roomKey);
         roomCacheData.add(roomKey, room);
       } */
-    // 大盘
-    const overviewCodes = [
-      'SH600031',
-      'SH000001',
-      'SH000300',
-      'SZ399001',
-      'SZ399006',
-      'SH000688',
-    ];
-    // joke
-    // text = text
-    //   .replace(/大金重工/g, '三一重工')
-    //   .replace(/隆基股份/g, '三一重工')
-    //   .replace(/贵州茅台/g, '三一重工');
+    // 我的持仓
+    const myCodes = ['SH600036', 'SH002142', 'SH601012', 'SH000858'];
 
     const [names, codes] = parseMsg(text, true);
     let symbol = '';
@@ -47,6 +35,8 @@ async function message(message, isSimple = false) {
       symbol = codes.join(',');
     } else if (text.indexOf('大盘') >= 0 || text.indexOf('指数') >= 0) {
       symbol = overviewCodes.join(',');
+    } else if (text === '我的持仓') {
+      symbol = myCodes.join(',');
     }
     if (symbol) {
       xueqiu.quote(symbol).then((res) => {
