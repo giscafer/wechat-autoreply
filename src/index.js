@@ -6,9 +6,7 @@
 // polyfill
 require('./utils/polyfill');
 // middleware
-// const Wechat = require('wechat4u');
-const { Wechaty, config } = require('wechaty');
-const request = require('request');
+const { WechatyBuilder } = require('wechaty');
 const qrTerm = require('qrcode-terminal');
 const fs = require('fs');
 const { FileBox } = require('file-box');
@@ -38,9 +36,10 @@ let contactUsers = [];
 const adminName = 'Nickbing Lao';
 
 // 尝试获取本地登录数据，免扫码
+// bot = new Wechaty({ name: 'leekhub' });
+const options = { name: 'leekhub' };
 try {
-  console.log('new');
-  bot = new Wechaty({ name: 'leekhub' });
+  bot = WechatyBuilder.build(options);
   // bot = new Wechat(require('./sync-data.json'));
 } catch (e) {
   console.log(e);

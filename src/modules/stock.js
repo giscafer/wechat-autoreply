@@ -36,10 +36,10 @@ async function message(message, isSimple = false) {
       'SH000688',
     ];
     // joke
-    text = text
-      .replace(/大金重工/g, '三一重工')
-      .replace(/隆基股份/g, '三一重工')
-      .replace(/贵州茅台/g, '三一重工');
+    // text = text
+    //   .replace(/大金重工/g, '三一重工')
+    //   .replace(/隆基股份/g, '三一重工')
+    //   .replace(/贵州茅台/g, '三一重工');
 
     const [names, codes] = parseMsg(text, true);
     let symbol = '';
