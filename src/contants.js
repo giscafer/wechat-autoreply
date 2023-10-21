@@ -1,6 +1,6 @@
 const RegType = {
-  stock: /^(:|：|@)/,
-  stockPrefix: /^@/,
+  stock: /^(:|：|#)/,
+  stockPrefix: /^#/,
 };
 
 module.exports = { RegType };
