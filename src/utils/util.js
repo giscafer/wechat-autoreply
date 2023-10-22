@@ -6,27 +6,6 @@
 
 const ocrModule = require('../modules/ocr');
 
-function isLebrain(text) {
-  return (
-    text.includes('勒布朗') ||
-    text.includes('詹姆斯') ||
-    text.includes('詹皇') ||
-    text.includes('James') ||
-    text.includes('james')
-  );
-}
-
-function isCurry(text) {
-  return (
-    text.includes('库里') ||
-    text.includes('小学生') ||
-    text.includes('curry') ||
-    text.includes('勇士') ||
-    text.includes('三分') ||
-    text.includes('3分')
-  );
-}
-
 // 翻译
 function isTranslate(text) {
   return (
@@ -134,7 +113,7 @@ function introInfo() {
   return `
     【LeekHub小助手】使用说明：
 
-    0.股票信息：回复 “@或书名号 + 股票名字”，如：@三一重工；
+    0.股票信息：回复 “#或书名号 + 股票名字”，如：#招商银行；
 
     1.自动查询图片：回复 “图 关键字”，如：图 西瓜；
 
@@ -210,7 +189,5 @@ module.exports = {
   getTransText,
   transTarget,
   isTranslate,
-  isLebrain,
-  isCurry,
   ocr,
 };

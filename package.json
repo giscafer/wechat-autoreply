@@ -1,7 +1,7 @@
 {
   "name": "wechat-autoreply",
-  "version": "2.0.0",
-  "description": "web微信自动回复",
+  "version": "1.3.0",
+  "description": "微信自动回复机器人",
   "main": "index.js",
   "scripts": {
     "start": "node ./src/index",
@@ -15,7 +15,7 @@
     "wechat",
     "autoreplay"
   ],
-  "author": "Nickbing Lao<giscafer@outlook.com>",
+  "author": "Nicky Lao<giscafer@outlook.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/giscafer/wechat-autoreply/issues"

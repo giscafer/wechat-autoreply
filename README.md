@@ -42,8 +42,10 @@ let tangLen = 58; //唐诗，最大58
 
 ## Usage
 
+> 需要修改的配置文件：`src/config.js`
+
 - npm install
-- node index
+- npm run start
 
 运行后扫描二维码登录微信即可
 
@@ -51,10 +53,10 @@ let tangLen = 58; //唐诗，最大58
 
 **不管是在微信群聊还是微信私聊中，触发关键词，都会出现自动回复**
 
-![screenshot](./screenshot/screenshot.jpg) ![screenshot4](./screenshot/screenshot4.jpg)
-
-![screenshot5](./screenshot/screenshot5.jpg) ![screenshot2](./screenshot/screenshot2.jpg)
-
+![screenshot](./screenshot/screenshot.jpg)
+![screenshot2](./screenshot/screenshot2.jpg)
+![screenshot5](./screenshot/screenshot5.png)
+![screenshot4](./screenshot/screenshot4.jpg)
 ![screenshot3](./screenshot/screenshot3.jpg)
 
 ## Relation

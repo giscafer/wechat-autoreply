@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------
- *  Copyright (c) Nickbing Lao<giscafer@outlook.com>. All rights reserved.
+ *  Copyright (c) Nicky Lao<giscafer@outlook.com>. All rights reserved.
  *  Licensed under the MIT License.
  *-------------------------------------------------------------*/
 
@@ -15,7 +15,7 @@ const { FileBox } = require('file-box');
 const _ = require('./utils/util');
 const imgUtil = require('./utils/image');
 const { RegType } = require('./contants');
-const { activeRooms } = require('./config');
+const { activeRooms, adminUserName } = require('./config');
 
 // modules
 // const poetry = require('./modules/poetry'); // 需要测试诗词的放开这个注释即可
@@ -33,36 +33,17 @@ let bot, loginUserName;
 let ocrOn = false;
 let contactUsers = [];
 
-const adminName = 'Nicky Lao';
+const adminName = adminUserName;
 
 // 尝试获取本地登录数据，免扫码
-// bot = new Wechaty({ name: 'leekhub' });
 const options = { name: 'leekhub' };
+
 try {
   bot = WechatyBuilder.build(options);
-  // bot = new Wechat(require('./sync-data.json'));
 } catch (e) {
   console.log(e);
-  // bot = new Wechat();
 }
-/**服务心跳检查（发送到微信文件助手） */
-/* bot.setPollingIntervalGetter(() => {
-  return 2 * 60 * 1000;
-}); */
 
-/* if (bot.PROP.uin) {
-  bot.restart();
-} else {
-  bot.start();
-} */
-
-// 生成二维码
-/* bot.on('uuid', (uuid) => {
-  qrcode.generate('https://login.weixin.qq.com/l/' + uuid, {
-    small: true,
-  });
-  // console.log('二维码链接：', 'https://login.weixin.qq.com/qrcode/' + uuid);
-}); */
 bot.on('scan', onScan);
 bot.on('error', onError);
 
@@ -70,7 +51,6 @@ bot.on('error', onError);
 bot.on('login', (user) => {
   loginUserName = user.name();
   console.log(`${loginUserName} login`);
-  // fs.writeFileSync('./sync-data.json', JSON.stringify(user));
 });
 
 // 登出成功
