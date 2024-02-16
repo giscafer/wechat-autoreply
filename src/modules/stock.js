@@ -24,9 +24,9 @@ const myCodes = ['SH600036', 'SZ002142', 'SH601012', 'SZ000858'];
  * @param {*} message
  */
 
-async function message(message, text) {
-  const simpleMode = RegType.stockPrefix.test(text);
-  const numberMode = RegType.stockPrefix2.test(text);
+async function message(message, content) {
+  const simpleMode = RegType.stockPrefix.test(content);
+  const numberMode = RegType.stockPrefix2.test(content);
   const type = simpleMode ? 1 : numberMode ? 0 : 2;
   try {
     const room = message.room();
@@ -76,7 +76,7 @@ async function message(message, text) {
     console.log(`Message: ${room}, ${from.name()}, ${text}`);
   } */
   } catch (err) {
-    console.log(text, err);
+    console.log(content, err);
   }
 }
 
