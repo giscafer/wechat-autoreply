@@ -1,22 +1,22 @@
-const axiosInstance = require('../utils/request');
-const { timestamp } = require('../utils/index');
-const randomHeader = require('../utils/randomHeader');
+const axiosInstance = require("../utils/request");
+const { timestamp } = require("../utils/index");
+const randomHeader = require("../utils/randomHeader");
 
 const defaltHeaders = {
   Accept:
-    'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-  'Accept-Encoding': 'gzip, deflate, br',
-  'Accept-Language': 'en-US,en;q=0.9',
-  'Cache-Control': 'max-age=0',
-  Connection: 'keep-alive',
-  Host: 'stock.xueqiu.com',
-  'Sec-Fetch-Dest': 'document',
-  'Sec-Fetch-Mode': 'navigate',
-  'Sec-Fetch-Site': 'none',
-  'Sec-Fetch-User': '?1',
-  'Upgrade-Insecure-Requests': 1,
-  'User-Agent':
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36};',
+    "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+  "Accept-Encoding": "gzip, deflate, br",
+  "Accept-Language": "en-US,en;q=0.9",
+  "Cache-Control": "max-age=0",
+  Connection: "keep-alive",
+  Host: "stock.xueqiu.com",
+  "Sec-Fetch-Dest": "document",
+  "Sec-Fetch-Mode": "navigate",
+  "Sec-Fetch-Site": "none",
+  "Sec-Fetch-User": "?1",
+  "Upgrade-Insecure-Requests": 1,
+  "User-Agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36};",
 };
 class Xueqiu {
   cookies = `device_id=${Math.random().toString(36).substring(2, 15)}`;
@@ -34,15 +34,15 @@ class Xueqiu {
 
   init() {
     axiosInstance.get(`https://xueqiu.com/`).then((response) => {
-      const cookiesHeader = response.headers['set-cookie'];
+      const cookiesHeader = response.headers["set-cookie"];
       this.cookies +=
         cookiesHeader
           .map((h) => {
-            let content = h.split(';')[0];
-            return content.endsWith('=') ? '' : content;
+            let content = h.split(";")[0];
+            return content.endsWith("=") ? "" : content;
           })
-          .filter((h) => h != '')
-          .join(';') + ';';
+          .filter((h) => h != "")
+          .join(";") + ";";
     });
   }
 
@@ -54,11 +54,11 @@ class Xueqiu {
           ? {
               headers: this.headers,
             }
-          : {},
+          : {}
       )
       .then((response) => {
         // 处理cookie 问题
-        if (response.status === 400) {
+        if (response?.status === 400 || !response?.status) {
           this.init();
         }
         return response.data;
@@ -75,8 +75,8 @@ class Xueqiu {
   }
   batchQuoteResp(items = [], type = 0) {
     return items
-      .map(({ market, quote }) => {
-        const { status } = market;
+      .map(({ market = {}, quote }) => {
+        const { status } = market || {};
         const {
           open,
           last_close,
@@ -92,18 +92,18 @@ class Xueqiu {
         } = quote;
         if (type === 0) {
           return [
-            `${symbol.substr(2)}：${percent >= 0 ? '+' : ''}${percent}%`,
-          ].join('，');
+            `${symbol.substr(2)}：${percent >= 0 ? "+" : ""}${percent}%`,
+          ].join("，");
         }
         if (type === 1) {
           return [
-            `${percent >= 0 ? '🍖' : '🌱'} ${name}：现价 ${current}`,
+            `${percent >= 0 ? "🍖" : "🌱"} ${name}：现价 ${current}`,
             `涨幅 ${percent}%`,
             `振幅 ${amplitude}%`,
-          ].join('，');
+          ].join("，");
         }
         return [
-          `${percent >= 0 ? '🍖' : '🌱'} ${name}  ( ${status} )`,
+          `${percent >= 0 ? "🍖" : "🌱"} ${name}  ( ${status} )`,
           `涨幅 : ${percent}%\n现价 : ${current}`,
 
           `今开 : ${open}\n今日最高 : ${high} \n昨收 : ${last_close}`,
@@ -114,9 +114,9 @@ class Xueqiu {
             amount / 100000000
           ).toFixed(2)}亿`,
           `https://xueqiu.com/S/${symbol}`,
-        ].join('\n');
+        ].join("\n");
       })
-      .join('\n\n');
+      .join("\n\n");
   }
   list(page, size) {
     const url = `https://xueqiu.com/service/v5/stock/screener/quote/list?page=${page}&size=${size}&order=desc&orderby=percent&order_by=percent&market=CN&type=sh_sz&_=${timestamp()}`;
@@ -128,18 +128,18 @@ class Xueqiu {
   }
   longhuRes({ items, items_size }, date) {
     if (items_size === 0) {
-      return '暂无当日龙虎榜数据！';
+      return "暂无当日龙虎榜数据！";
     }
     return items
       .map((item) => {
         const { symbol, name, percent, type_name } = item;
         return [
-          `${percent >= 0 ? '🔴' : '🟢'} ${name}  涨幅 : ${percent}%`,
-          `上榜原因 : ${type_name.join('\n')} `,
+          `${percent >= 0 ? "🔴" : "🟢"} ${name}  涨幅 : ${percent}%`,
+          `上榜原因 : ${type_name.join("\n")} `,
           `https://xueqiu.com/snowman/S/${symbol}/detail#/LHB?date=${date}`,
-        ].join('\n');
+        ].join("\n");
       })
-      .join('\n');
+      .join("\n");
   }
 }
 
