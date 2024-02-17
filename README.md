@@ -1,6 +1,6 @@
 # wechat-autoreply
 
-web 微信自动回复，（web 微信！！！非微信公众号，不管是在微信群聊还是微信私聊中，触发关键词，都会出现自动回复）
+微信机器人
 
 ## Feature
 
@@ -21,10 +21,6 @@ web 微信自动回复，（web 微信！！！非微信公众号，不管是在
 - 查招聘行情信息，回复 `查招聘行情`
 
 - 查询台风信息，回复 `查台风`
-
-- 查询天气信息，回复 `查天气 城市名称`，如`查天气 广州`
-
-- 查询 ip 归属地信息，回复 `查ip ip`，如 `查ip 221.193.207.29`
 
 - OCR 图片文字自动提取。管理员文本发送 `open easyocr confirm` 启用 OCR 功能，随后，群中所有的图片（不含表情）都会走 OCR 文字识别；管理员回复 `close easyocr` 即可关闭 OCR 功能，关闭后不再监听图片信息。OCR 功能实现完整软件见：https://github.com/giscafer/easyocr
 
@@ -61,7 +57,7 @@ let tangLen = 58; //唐诗，最大58
 
 ## Relation
 
-- 微信接口基于 [wechat4u](https://github.com/wechaty/wechaty)
+- 微信接口基于 [wechaty](https://github.com/wechaty/wechaty)
 
 - 唐诗 56591 首、宋词 251000 首，数据来源于 [chinese-poetry](https://github.com/chinese-poetry/chinese-poetry)
 
