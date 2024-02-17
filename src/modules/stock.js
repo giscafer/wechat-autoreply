@@ -45,10 +45,11 @@ async function message(message, content) {
 
     const [names, codes] = parseMsg(text, true);
     let symbol = "";
+    const hqFlag = text.indexOf("大盘") >= 0 || text.indexOf("指数") >= 0;
     // console.log(text, codes);
     if (codes.length > 0) {
       symbol = codes.join(",");
-    } else if (text.indexOf("大盘") >= 0 || text.indexOf("指数") >= 0) {
+    } else if (hqFlag) {
       symbol = overviewCodes.join(",");
     } else if (text === "我的持仓") {
       symbol = myCodes.join(",");
@@ -59,7 +60,7 @@ async function message(message, content) {
         const msg = xueqiu.batchQuoteResp(items, type);
         if (!msg) return;
         let summary = "";
-        if (symbol.length > 1) {
+        if (hqFlag) {
           const upDownData = await eastmoney.getUpDownData();
           const upDownDataText = `\n------\n${upDownData.up}只上涨，${upDownData.down}只待涨!`;
           summary =
