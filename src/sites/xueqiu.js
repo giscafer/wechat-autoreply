@@ -1,23 +1,8 @@
 const axiosInstance = require("../utils/request");
 const { timestamp } = require("../utils/index");
 const randomHeader = require("../utils/randomHeader");
+const { defaultHeaders } = require("../constants");
 
-const defaltHeaders = {
-  Accept:
-    "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-  "Accept-Encoding": "gzip, deflate, br",
-  "Accept-Language": "en-US,en;q=0.9",
-  "Cache-Control": "max-age=0",
-  Connection: "keep-alive",
-  Host: "stock.xueqiu.com",
-  "Sec-Fetch-Dest": "document",
-  "Sec-Fetch-Mode": "navigate",
-  "Sec-Fetch-Site": "none",
-  "Sec-Fetch-User": "?1",
-  "Upgrade-Insecure-Requests": 1,
-  "User-Agent":
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36};",
-};
 class Xueqiu {
   cookies = `device_id=${Math.random().toString(36).substring(2, 15)}`;
   constructor() {
@@ -26,7 +11,7 @@ class Xueqiu {
 
   get headers() {
     return {
-      ...defaltHeaders,
+      ...defaultHeaders,
       ...randomHeader(),
       Cookie: this.cookies,
     };
@@ -90,21 +75,22 @@ class Xueqiu {
           volume,
           symbol,
         } = quote;
+        const red = percent >= 0;
         if (type === 0) {
-          return [
-            `${symbol.substr(2)}：${percent >= 0 ? "+" : ""}${percent}%`,
-          ].join("，");
+          return [`${symbol.substr(2)}：${red ? "+" : ""}${percent}%`].join(
+            "，"
+          );
         }
         if (type === 1) {
           return [
-            `${percent >= 0 ? "🍖" : "🌱"} ${name}：现价 ${current}`,
-            `涨幅 ${percent}%`,
-            `振幅 ${amplitude}%`,
+            `${red ? "🍖" : "🌱"} ${name}：现价 ${current}`,
+            `${red > 0 ? "涨" : "跌"}幅 ${percent}%`,
+            // `振幅 ${amplitude}%`,
           ].join("，");
         }
         return [
-          `${percent >= 0 ? "🍖" : "🌱"} ${name}  ( ${status} )`,
-          `涨幅 : ${percent}%\n现价 : ${current}`,
+          `${red ? "🍖" : "🌱"} ${name}  ( ${status} )`,
+          `${red > 0 ? "涨" : "跌"}幅 : ${percent}%\n现价 : ${current}`,
 
           `今开 : ${open}\n今日最高 : ${high} \n昨收 : ${last_close}`,
           turnover_rate

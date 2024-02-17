@@ -14,7 +14,7 @@ const { FileBox } = require('file-box');
 // utils
 const _ = require('./utils/util');
 const imgUtil = require('./utils/image');
-const { RegType } = require('./contants');
+const { RegType } = require('./constants');
 const { activeRooms, adminUserName } = require('./config');
 
 // modules

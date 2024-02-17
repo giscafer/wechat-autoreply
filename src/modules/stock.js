@@ -1,23 +1,24 @@
 // const CacheData = require('../utils/cache');
-const { parseMsg, parseDate } = require('../utils/index');
-const xueqiu = require('../sites/xueqiu');
+const { parseMsg, parseDate } = require("../utils/index");
+const xueqiu = require("../sites/xueqiu");
+const eastmoney = require("../sites/eastmoney");
 // const { activeRooms } = require('../config');
 // const roomCacheData = new CacheData();
-const { RegType } = require('../contants');
+const { RegType } = require("../constants");
 
 const debugFlag = true;
 
 // 大盘
 const overviewCodes = [
-  'SH000001',
-  'SH000300',
-  'SZ399001',
-  'SZ399006',
-  'SH000688',
+  "SH000001",
+  "SH000300",
+  "SZ399001",
+  "SZ399006",
+  "SH000688",
 ];
 
 // 我的持仓
-const myCodes = ['SH600036', 'SZ002142', 'SH601012', 'SZ000858'];
+const myCodes = ["SH600036", "SZ002142", "SH601012", "SZ000858"];
 
 /**
  * 股票消息处理
@@ -31,7 +32,7 @@ async function message(message, content) {
   try {
     const room = message.room();
     const from = message.talker();
-    let text = message.text().replace(RegType.stock, '');
+    let text = message.text().replace(RegType.stock, "");
     const sayer = room || message;
     /* if (room || debugFlag) {
     const topic = await room.topic();
@@ -43,24 +44,27 @@ async function message(message, content) {
       } */
 
     const [names, codes] = parseMsg(text, true);
-    let symbol = '';
-    console.log(text, codes);
+    let symbol = "";
+    // console.log(text, codes);
     if (codes.length > 0) {
-      symbol = codes.join(',');
-    } else if (text.indexOf('大盘') >= 0 || text.indexOf('指数') >= 0) {
-      symbol = overviewCodes.join(',');
-    } else if (text === '我的持仓') {
-      symbol = myCodes.join(',');
+      symbol = codes.join(",");
+    } else if (text.indexOf("大盘") >= 0 || text.indexOf("指数") >= 0) {
+      symbol = overviewCodes.join(",");
+    } else if (text === "我的持仓") {
+      symbol = myCodes.join(",");
     }
     if (symbol) {
-      xueqiu.quote(symbol).then((res) => {
+      xueqiu.quote(symbol).then(async (res) => {
         const { items } = res?.data || {};
         const msg = xueqiu.batchQuoteResp(items, type);
         if (!msg) return;
-        sayer.say(msg);
+        const upDownData = await eastmoney.getUpDownData();
+        const upDownDataText = `${upDownData.up}只上涨，${upDownData.down}只待涨!`;
+        const summary = upDownData.up > 4500 ? " 这不就是牛市？" : "";
+        sayer.say(msg + upDownDataText + summary);
       });
     }
-    if (text.indexOf('龙虎榜') >= 0) {
+    if (text.indexOf("龙虎榜") >= 0) {
       const date = parseDate(text);
       xueqiu.longhu(date).then((res) => {
         const data = res?.data;
