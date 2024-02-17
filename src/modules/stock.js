@@ -58,10 +58,14 @@ async function message(message, content) {
         const { items } = res?.data || {};
         const msg = xueqiu.batchQuoteResp(items, type);
         if (!msg) return;
-        const upDownData = await eastmoney.getUpDownData();
-        const upDownDataText = `${upDownData.up}只上涨，${upDownData.down}只待涨!`;
-        const summary = upDownData.up > 4500 ? " 这不就是牛市？" : "";
-        sayer.say(msg + upDownDataText + summary);
+        let summary = "";
+        if (symbol.length > 1) {
+          const upDownData = await eastmoney.getUpDownData();
+          const upDownDataText = `\n------\n${upDownData.up}只上涨，${upDownData.down}只待涨!`;
+          summary =
+            upDownDataText + upDownData.up > 4500 ? " 这不就是牛市？" : "";
+        }
+        sayer.say(msg + summary);
       });
     }
     if (text.indexOf("龙虎榜") >= 0) {

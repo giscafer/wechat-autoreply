@@ -37,8 +37,15 @@ class Eastmoney {
       });
   }
   getUpDownData() {
-    const url = `https://emdatah5.eastmoney.com/dc/NXFXB/GetUpDownData?type=0`;
-    return this.request(url, false).then((res) => res[0]);
+    const url = `https://emdatah5.eastmoney.com/dc/NXFXB/GetUpDownData?type=0&st=${Date.now()}`;
+    return this.request(url, false)
+      .then((res) => {
+        return res?.[0] || {};
+      })
+      .catch((err) => {
+        console.log(err);
+        return {};
+      });
   }
 }
 
