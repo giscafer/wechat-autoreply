@@ -1,7 +1,7 @@
 // const CacheData = require('../utils/cache');
 const { parseMsg, parseDate } = require("../utils/index");
-const xueqiu = require("../sites/xueqiu");
-const eastmoney = require("../sites/eastmoney");
+const xueqiu = require("../lib/xueqiu");
+const eastmoney = require("../lib/eastmoney");
 // const { activeRooms } = require('../config');
 // const roomCacheData = new CacheData();
 const { RegType } = require("../constants");
@@ -65,10 +65,8 @@ async function message(message, content) {
           const upDownData = await eastmoney.getUpDownData();
           const upDownDataText = `\n------\n${upDownData.up}只上涨，${upDownData.down}只待涨!`;
           summary =
-            upDownDataText + upDownData.up > 4500 ? " 这不就是牛市？" : "";
-          console.log("upDownDataText=", upDownDataText);
+            upDownDataText + (upDownData.up > 4500 ? " 这不就是牛市？" : "");
         }
-        console.log("hqFlag=", hqFlag, summary);
         sayer.say(msg + summary);
       });
     }

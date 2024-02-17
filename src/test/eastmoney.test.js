@@ -1,4 +1,4 @@
-const eastmoney = require("../sites/eastmoney");
+const eastmoney = require("../lib/eastmoney");
 
 async function main() {
   const upDownData = await eastmoney.getUpDownData();
