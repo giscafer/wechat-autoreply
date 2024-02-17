@@ -60,6 +60,7 @@ async function message(message, content) {
         const msg = xueqiu.batchQuoteResp(items, type);
         if (!msg) return;
         let summary = "";
+        console.log("hqFlag=", hqFlag);
         if (hqFlag) {
           const upDownData = await eastmoney.getUpDownData();
           const upDownDataText = `\n------\n${upDownData.up}只上涨，${upDownData.down}只待涨!`;
