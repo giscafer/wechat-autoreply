@@ -18,7 +18,54 @@ const overviewCodes = [
 ];
 
 // 我的持仓
-const myCodes = ["SH600036", "SZ002142", "SH601012", "SZ000858"];
+const myCodes = [
+  "SH600036",
+  "SZ002142",
+  "SZ000858",
+  "SH601012",
+  "SH600009",
+  "SH600031",
+];
+// 央企六大行
+const fiveBankCodes = [
+  "SH601398",
+  "SH601939",
+  "SH601288",
+  "SH601988",
+  "SH601658",
+  "SH601328",
+];
+// 股份大行
+const shareBankCodes = [
+  "SH600036",
+  "SH601166",
+  "SZ000001",
+  "SH601998",
+  "SH600000",
+  "SH600016",
+];
+// 分红股
+const cashCodes = [
+  "SH601088",
+  "SH600900",
+  "SH601225",
+  "SH601919",
+  "SZ000651",
+  "SH600887",
+];
+// 白酒股
+const liquorCodes = [
+  "SH600519",
+  "SZ000568",
+  "SZ000858",
+  "SH600809",
+  "SH603198",
+  "SZ002304",
+  "SZ000596",
+  "SH603369",
+  "SH600702",
+  "SZ000799",
+];
 
 /**
  * 股票消息处理
@@ -53,6 +100,14 @@ async function message(message, content) {
       symbol = overviewCodes.join(",");
     } else if (text === "我的持仓") {
       symbol = myCodes.join(",");
+    } else if (text === "央行" || text === "四大行" || text === "五大行") {
+      symbol = fiveBankCodes.join(",");
+    } else if (text === "股份银行" || text === "股份制银行") {
+      symbol = shareBankCodes.join(",");
+    } else if (text === "分红股") {
+      symbol = cashCodes.join(",");
+    } else if (text === "白酒" || text === "白酒股") {
+      symbol = liquorCodes.join(",");
     }
     if (symbol) {
       xueqiu.quote(symbol).then(async (res) => {
@@ -65,7 +120,7 @@ async function message(message, content) {
           const upDownData = await eastmoney.getUpDownData();
           const upDownDataText = `\n------\n${upDownData.up}只上涨，${upDownData.down}只待涨!`;
           summary =
-            upDownDataText + (upDownData.up > 4500 ? " 这不就是牛市？" : "");
+            upDownDataText + (upDownData.up > 4000 ? " 这不就是牛市？" : "");
         }
         sayer.say(msg + summary);
       });
