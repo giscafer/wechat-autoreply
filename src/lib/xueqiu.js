@@ -108,6 +108,28 @@ class Xueqiu {
     const url = `https://xueqiu.com/service/v5/stock/screener/quote/list?page=${page}&size=${size}&order=desc&orderby=percent&order_by=percent&market=CN&type=sh_sz&_=${timestamp()}`;
     return this.request(url, false).then((res) => res.data);
   }
+  hot(type = 1) {
+    const url = `https://stock.xueqiu.com/v5/stock/hot_stock/list.json?size=8&_type=12&type=12&_=${timestamp()}`;
+    return this.request(url, false).then((res) => {
+      const items = res.data?.items || [];
+      return items
+        .map((quote) => {
+          const { current, name, percent, symbol } = quote;
+          const red = percent >= 0;
+          if (type === 0) {
+            return [`${symbol.substr(2)}：${red ? "+" : ""}${percent}%`].join(
+              "，"
+            );
+          }
+          return [
+            `${red ? "🍖" : "🌱"} ${name}：现价 ${current}`,
+            `${red > 0 ? "涨" : "跌"}幅 ${percent}%`,
+            // `振幅 ${amplitude}%`,
+          ].join("，");
+        })
+        .join("\n\n");
+    });
+  }
   longhu(date) {
     const url = `https://xueqiu.com/service/v5/stock/hq/longhu?date=${date}&_=${timestamp()}`;
     return this.request(url, false);

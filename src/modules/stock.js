@@ -20,11 +20,14 @@ const overviewCodes = [
 // 我的持仓
 const myCodes = [
   "SH600036",
+  "03968",
   "SZ002142",
   "SZ000858",
   "SH601012",
   "SH600009",
-  "SH600031",
+  "SH600702",
+  "SZ300595",
+  "SH688981",
 ];
 // 央企六大行
 const fiveBankCodes = [
@@ -52,6 +55,12 @@ const cashCodes = [
   "SH601919",
   "SZ000651",
   "SH600887",
+  "SH600690",
+  "SH601857",
+  "SZ000895",
+  "SZ002027",
+  "SZ000333",
+  "SZ601919",
 ];
 // 白酒股
 const liquorCodes = [
@@ -65,6 +74,45 @@ const liquorCodes = [
   "SH603369",
   "SH600702",
   "SZ000799",
+];
+// 医药
+const medicalCodes = [
+  "SH600196",
+  "SH603259",
+  "SH600276",
+  "SZ000661",
+  "SZ300347",
+  "SZ300122",
+  "SZ000538",
+  "SH600211",
+  "SH600329",
+  "SZ000999",
+  "SZ300760",
+];
+// 恒生互联网
+const hshlCodes = [
+  "00700",
+  "03690",
+  "01024",
+  "09999",
+  "09618",
+  "09988",
+  "09888",
+  "09626",
+  "03888",
+  "01810",
+];
+
+// 煤炭
+const mtCodes = [
+  "SH601088",
+  "SH601225",
+  "SH600188",
+  "SH601699",
+  "SZ002128",
+  "SH601666",
+  "SH600546",
+  "SH601898",
 ];
 
 /**
@@ -106,8 +154,14 @@ async function message(message, content) {
       symbol = shareBankCodes.join(",");
     } else if (text === "分红股") {
       symbol = cashCodes.join(",");
+    } else if (text === "煤炭") {
+      symbol = mtCodes.join(",");
     } else if (text === "白酒" || text === "白酒股") {
       symbol = liquorCodes.join(",");
+    } else if (text === "医药" || text === "医疗") {
+      symbol = medicalCodes.join(",");
+    } else if (text === "互联网" || text === "恒生互联网") {
+      symbol = hshlCodes.join(",");
     }
     if (symbol) {
       xueqiu.quote(symbol).then(async (res) => {
@@ -125,6 +179,11 @@ async function message(message, content) {
         sayer.say(msg + summary);
       });
     }
+    if (text.indexOf("热门") >= 0) {
+      xueqiu.hot(type).then((msg) => {
+        sayer.say(msg);
+      });
+    }
     if (text.indexOf("龙虎榜") >= 0) {
       const date = parseDate(text);
       xueqiu.longhu(date).then((res) => {
@@ -137,9 +196,6 @@ async function message(message, content) {
         sayer.say(msg);
       });
     }
-    /*   }
-    console.log(`Message: ${room}, ${from.name()}, ${text}`);
-  } */
   } catch (err) {
     console.log(content, err);
   }

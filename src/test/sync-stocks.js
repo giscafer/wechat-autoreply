@@ -6,7 +6,7 @@ const { resolve } = require("path");
 const axiosInstance = require("../utils/request");
 const fs = require("fs");
 
-async function delay(interval = 2000) {
+async function delay(interval = 5000) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve();
