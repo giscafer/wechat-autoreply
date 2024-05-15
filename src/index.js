@@ -15,7 +15,12 @@ const { FileBox } = require("file-box");
 const _ = require("./utils/util");
 const imgUtil = require("./utils/image");
 const { RegType } = require("./constants");
-const { mainRoom, activeRooms, adminUserName } = require("./config");
+const {
+  mainRoom,
+  fatFiresRoom,
+  activeRooms,
+  adminUserName,
+} = require("./config");
 
 // modules
 // const poetry = require('./modules/poetry'); // 需要测试诗词的放开这个注释即可
@@ -310,9 +315,10 @@ function textMsgHandler(msg) {
   } else if (text.startsWith("#看盘")) {
     if (isAdmin(talker)) {
       const roomName = room.payload.topic;
-      if (mainRoom === roomName) {
+      if (mainRoom === roomName || fatFiresRoom === roomName) {
         if (intervalTimer) {
           clearInterval(intervalTimer);
+          intervalTimer = null;
         }
         intervalTimer = setInterval(() => {
           stockMsgHandler(msg, "#我的持仓");
