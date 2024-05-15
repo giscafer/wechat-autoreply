@@ -4,39 +4,41 @@
  *-------------------------------------------------------------*/
 
 // polyfill
-require('./utils/polyfill');
+require("./utils/polyfill");
 // middleware
-const { WechatyBuilder } = require('wechaty');
-const qrTerm = require('qrcode-terminal');
-const fs = require('fs');
-const { FileBox } = require('file-box');
+const { WechatyBuilder } = require("wechaty");
+const qrTerm = require("qrcode-terminal");
+const fs = require("fs");
+const { FileBox } = require("file-box");
 
 // utils
-const _ = require('./utils/util');
-const imgUtil = require('./utils/image');
-const { RegType } = require('./constants');
-const { activeRooms, adminUserName } = require('./config');
+const _ = require("./utils/util");
+const imgUtil = require("./utils/image");
+const { RegType } = require("./constants");
+const { mainRoom, activeRooms, adminUserName } = require("./config");
 
 // modules
 // const poetry = require('./modules/poetry'); // 需要测试诗词的放开这个注释即可
-const getPicture = require('./modules/searchPic');
-const getTyphoonInfo = require('./modules/typhoon.js');
-const translate = require('./modules/translate');
-const ip = require('./modules/ip');
-const weather = require('./modules/weather');
-const keyword = require('./modules/keyword');
-const jobs = require('./modules/jobs');
-const stockMsgHandler = require('./modules/stock');
+const getPicture = require("./modules/searchPic");
+const getTyphoonInfo = require("./modules/typhoon.js");
+const translate = require("./modules/translate");
+const ip = require("./modules/ip");
+const weather = require("./modules/weather");
+const keyword = require("./modules/keyword");
+const jobs = require("./modules/jobs");
+const stockMsgHandler = require("./modules/stock");
 
 let bot, loginUserName;
 // ocr启用状态
 let ocrOn = false;
 let contactUsers = [];
+// 定时看盘
+let intervalTimer;
 
 const adminName = adminUserName;
 
 // 尝试获取本地登录数据，免扫码
-const options = { name: 'leekhub' };
+const options = { name: "leekhub" };
 
 try {
   bot = WechatyBuilder.build(options);
@@ -44,19 +46,19 @@ try {
   console.log(e);
 }
 
-bot.on('scan', onScan);
-bot.on('error', onError);
+bot.on("scan", onScan);
+bot.on("error", onError);
 
 // 登录成功
-bot.on('login', (user) => {
+bot.on("login", (user) => {
   loginUserName = user.name();
   console.log(`${loginUserName} login`);
 });
 
 // 登出成功
-bot.on('logout', () => {
+bot.on("logout", () => {
   console.log(`${user.name()} logouted`);
-  fs.unlinkSync('./sync-data.json');
+  fs.unlinkSync("./sync-data.json");
 });
 
 /* bot.on('contacts-updated', (contacts) => {
@@ -71,7 +73,7 @@ bot.on('logout', () => {
 }); */
 
 /**监听信息发送 */
-bot.on('message', async (msg) => {
+bot.on("message", async (msg) => {
   const MessageType = msg.type();
   const room = msg.room();
   const talker = msg.talker();
@@ -98,7 +100,7 @@ bot.on('message', async (msg) => {
     case bot.Message.Type.Image:
       if (ocrOn) {
         bot.getMsgImg(msg.MsgId).then((res) => {
-          let image = res.data.toString('base64');
+          let image = res.data.toString("base64");
           _.ocr(image).then((result) => {
             sendText(result, msg);
           });
@@ -109,7 +111,7 @@ bot.on('message', async (msg) => {
 });
 
 bot.start().catch(async (e) => {
-  console.error('Bot start() fail:', e);
+  console.error("Bot start() fail:", e);
   await bot.stop();
   process.exit(-1);
 });
@@ -126,15 +128,15 @@ function onScan(qrcode, status) {
   // Generate a QR Code online via
   // http://goqr.me/api/doc/create-qr-code/
   const qrcodeImageUrl = [
-    'https://wechaty.js.org/qrcode/',
+    "https://wechaty.js.org/qrcode/",
     encodeURIComponent(qrcode),
-  ].join('');
+  ].join("");
 
   console.log(`[${status}] ${qrcodeImageUrl}\nScan QR Code above to log in: `);
 }
 
 function onError(e) {
-  console.error('Bot error:', e);
+  console.error("Bot error:", e);
   /*
   if (bot.logonoff()) {
     bot.say('Wechaty error: ' + e.message).catch(console.error)
@@ -148,45 +150,51 @@ function sendText(text, msg) {
   msg.say(text).catch(console.error);
 }
 
+function isAdmin(talker) {
+  return (
+    talker.payload.name === adminName || talker.payload.name === loginUserName
+  );
+}
+
 /**文本信息识别 */
 function textMsgHandler(msg) {
   let room = msg.room();
   let talker = msg.talker();
   let text = msg.text();
   if (!text) return;
-  let index = text.indexOf('\n');
+  let index = text.indexOf("\n");
   if (index !== -1) {
     text = text.substr(index + 1, text.length);
   }
   text = text.trim();
   console.log(`${talker.name()}：${text}`);
   // 图片搜索
-  if (text.indexOf('图 ') === 0) {
-    const keyword = text.replace('图', '').replace('图片', '').trim();
-    if (keyword.indexOf('密集') !== -1 || keyword.indexOf('恐惧') !== -1) {
-      msg.say('记过处分+1次');
+  if (text.indexOf("图 ") === 0) {
+    const keyword = text.replace("图", "").replace("图片", "").trim();
+    if (keyword.indexOf("密集") !== -1 || keyword.indexOf("恐惧") !== -1) {
+      msg.say("记过处分+1次");
       return;
     }
-    if (keyword.indexOf('袁新生') !== -1) {
-      msg.say('做人请不要太袁新生！！！');
+    if (keyword.indexOf("袁新生") !== -1) {
+      msg.say("做人请不要太袁新生！！！");
       return;
     }
-    msg.say('随机图片搜索中……');
+    msg.say("随机图片搜索中……");
     getPicture(keyword)
       .then((url) => {
         if (url) {
           console.log(url);
           let imgUrl = imgUtil.getImageUrl(url);
           if (!imgUrl) {
-            msg.say('搜索的图片解析失败：' + url);
+            msg.say("搜索的图片解析失败：" + url);
             return;
           }
           try {
             const fileBox = FileBox.fromUrl(imgUrl);
             msg.say(fileBox);
           } catch (err) {
-            msg.say('图片发送错误：' + imgUrl);
-            console.log('图片发送错误', err);
+            msg.say("图片发送错误：" + imgUrl);
+            console.log("图片发送错误", err);
           }
         } else {
           msg.say(`无相关[${keyword}]图片!`);
@@ -197,14 +205,14 @@ function textMsgHandler(msg) {
       });
   }
   // 台风查询
-  else if (text.indexOf('查台风') === 0) {
+  else if (text.indexOf("查台风") === 0) {
     getTyphoonInfo()
       .then((text) => {
-        text = text || '当前没有台风！';
+        text = text || "当前没有台风！";
         sendText(text, msg);
       })
       .catch((err) => {
-        sendText('台风查询失败', msg);
+        sendText("台风查询失败", msg);
       });
   }
   // 词典翻译
@@ -213,15 +221,15 @@ function textMsgHandler(msg) {
     translate(
       Object.assign(
         {
-          from: 'en',
-          to: 'zh',
+          from: "en",
+          to: "zh",
           query: _text,
         },
-        _.transTarget(text),
+        _.transTarget(text)
       ),
       (result) => {
         sendText(result, msg);
-      },
+      }
     );
   }
   // ip归属地信息
@@ -233,7 +241,7 @@ function textMsgHandler(msg) {
         sendText(result, msg);
       })
       .catch((err) => {
-        sendText('ip查询失败', msg);
+        sendText("ip查询失败", msg);
       });
   }
   // 天气信息
@@ -244,12 +252,12 @@ function textMsgHandler(msg) {
         sendText(result, msg);
       })
       .catch((err) => {
-        sendText('天气查询失败', msg);
+        sendText("天气查询失败", msg);
       });
   }
   // 唐诗宋词查询
   else if (_.isPoetry(text)) {
-    sendText('已关闭该功能', msg);
+    sendText("已关闭该功能", msg);
     /*  let result = poetry(text);
     if (result) {
       sendText(result, msg);
@@ -267,7 +275,7 @@ function textMsgHandler(msg) {
     sendText(result, msg);
   }
   // 关键词设定自动回复
-  else if (text.startsWith('查') || text.startsWith('query')) {
+  else if (text.startsWith("查") || text.startsWith("query")) {
     let result = keyword(text);
     if (result) {
       sendText(result, msg);
@@ -275,35 +283,51 @@ function textMsgHandler(msg) {
   }
 
   // 本人同意开启
-  else if (text.startsWith('#上班')) {
+  else if (text.startsWith("#上班")) {
     const roomName = room.payload.topic;
-    if (
-      talker.payload.name === adminName ||
-      talker.payload.name === loginUserName
-    ) {
+    if (isAdmin(talker)) {
       if (activeRooms.indexOf(roomName) === -1) {
         activeRooms.push(roomName);
       }
-      sendText('LeekHub Robot 已开启，欢迎使用！', msg);
+      sendText("LeekHub Robot 已开启，欢迎使用！", msg);
     } else {
-      sendText('抱歉，您没有权限！', msg);
+      sendText("抱歉，您没有权限！", msg);
     }
   }
   // 关闭 bot
-  else if (text.startsWith('#下班')) {
-    if (
-      talker.payload.name === adminName ||
-      talker.payload.name === loginUserName
-    ) {
+  else if (text.startsWith("#下班")) {
+    if (isAdmin(talker)) {
       const roomName = room.payload.topic;
       const index = activeRooms.indexOf(roomName);
       activeRooms.splice(index, 1);
 
-      sendText('LeekHub Robot 已关闭', msg);
+      sendText("LeekHub Robot 已关闭", msg);
     } else {
-      sendText('抱歉，您没有权限！', msg);
+      sendText("抱歉，您没有权限！", msg);
     }
   } else if (RegType.stock.test(text)) {
     stockMsgHandler(msg, text);
+  } else if (text.startsWith("#看盘")) {
+    if (isAdmin(talker)) {
+      const roomName = room.payload.topic;
+      if (mainRoom === roomName) {
+        if (intervalTimer) {
+          clearInterval(intervalTimer);
+        }
+        intervalTimer = setInterval(() => {
+          stockMsgHandler(msg, "#我的持仓");
+        }, 60000);
+        sendText("自动看盘已开启", msg);
+      }
+    } else {
+      sendText("抱歉，您没有权限！", msg);
+    }
+  } else if (text.startsWith("#关闭看盘")) {
+    if (isAdmin(talker)) {
+      clearInterval(intervalTimer);
+      sendText("自动看盘已关闭", msg);
+    } else {
+      sendText("抱歉，您没有权限！", msg);
+    }
   }
 }
