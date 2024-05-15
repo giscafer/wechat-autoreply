@@ -68,5 +68,5 @@ MIT
 ---
 
 > [giscafer.com](http://giscafer.com) &nbsp;&middot;&nbsp;
-> GitHub [@giscafer](https://github.com/giscafer) &nbsp;&middot;&nbsp;
-> X [@nicky_lao](https://twitter.com/nicky_lao)
+> X [@nicky_lao](https://twitter.com/nicky_lao)&nbsp;&middot;&nbsp;
+> YouTube [@LeekHuber](https://www.youtube.com/@LeekHuber)
