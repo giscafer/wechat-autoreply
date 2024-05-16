@@ -310,9 +310,7 @@ function textMsgHandler(msg) {
     } else {
       sendText("抱歉，您没有权限！", msg);
     }
-  } else if (RegType.stock.test(text)) {
-    stockMsgHandler(msg, text);
-  } else if (text.startsWith("#看盘")) {
+  }else if (text.startsWith("#看盘")) {
     if (isAdmin(talker)) {
       const roomName = room.payload.topic;
       if (mainRoom === roomName || fatFiresRoom === roomName) {
@@ -335,5 +333,7 @@ function textMsgHandler(msg) {
     } else {
       sendText("抱歉，您没有权限！", msg);
     }
-  }
+  } else if (RegType.stock.test(text)) {
+    stockMsgHandler(msg, text);
+  } 
 }
