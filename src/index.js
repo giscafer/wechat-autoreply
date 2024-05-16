@@ -288,7 +288,7 @@ function textMsgHandler(msg) {
   }
 
   // 本人同意开启
-  else if (text.startsWith("#上班")) {
+  else if (text.startsWith("~上班")) {
     const roomName = room.payload.topic;
     if (isAdmin(talker)) {
       if (activeRooms.indexOf(roomName) === -1) {
@@ -300,7 +300,7 @@ function textMsgHandler(msg) {
     }
   }
   // 关闭 bot
-  else if (text.startsWith("#下班")) {
+  else if (text.startsWith("~下班")) {
     if (isAdmin(talker)) {
       const roomName = room.payload.topic;
       const index = activeRooms.indexOf(roomName);
@@ -312,7 +312,7 @@ function textMsgHandler(msg) {
     }
   } else if (RegType.stock.test(text)) {
     stockMsgHandler(msg, text);
-  } else if (text.startsWith("#看盘")) {
+  } else if (text.startsWith("~看盘")) {
     if (isAdmin(talker)) {
       const roomName = room.payload.topic;
       if (mainRoom === roomName || fatFiresRoom === roomName) {
@@ -328,7 +328,7 @@ function textMsgHandler(msg) {
     } else {
       sendText("抱歉，您没有权限！", msg);
     }
-  } else if (text.startsWith("#关闭看盘")) {
+  } else if (text.startsWith("~关盘")) {
     if (isAdmin(talker)) {
       clearInterval(intervalTimer);
       sendText("自动看盘已关闭", msg);
