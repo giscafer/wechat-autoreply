@@ -26,8 +26,8 @@ const myCodes = [
   "SH601012",
   "SH600009",
   "SH600702",
+  "SH000568",
   "SZ300595",
-  "SH688981",
 ];
 // 央企六大行
 const fiveBankCodes = [
@@ -60,7 +60,7 @@ const cashCodes = [
   "SZ000895",
   "SZ002027",
   "SZ000333",
-  "SZ601919",
+  "SH601919",
 ];
 // 白酒股
 const liquorCodes = [
@@ -77,6 +77,10 @@ const liquorCodes = [
 ];
 // 医药
 const medicalCodes = [
+  "SH688180",
+  "SH688578",
+  "SH600196",
+  "SH688235",
   "SH600196",
   "SH603259",
   "SH600276",

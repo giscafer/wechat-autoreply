@@ -9,18 +9,20 @@ class Xueqiu {
     this.init();
   }
 
-  get headers() {
+  async headers() {
+    const Cookie = await this.init();
     return {
       ...defaultHeaders,
       ...randomHeader(),
-      Cookie: this.cookies,
+      Cookie,
     };
   }
 
   init() {
-    axiosInstance.get(`https://xueqiu.com/`).then((response) => {
+    return axiosInstance.get(`https://xueqiu.com/`).then((response) => {
       const cookiesHeader = response.headers["set-cookie"];
-      this.cookies +=
+      let c = "";
+      c +=
         cookiesHeader
           .map((h) => {
             let content = h.split(";")[0];
@@ -28,31 +30,50 @@ class Xueqiu {
           })
           .filter((h) => h != "")
           .join(";") + ";";
+      this.cookies = c;
+      
+      return c;
     });
   }
 
-  request(url, withHeaders = true) {
+  async request(url, withHeaders = true) {
+    const headers = await this.headers();
+    // console.log("🚀 ~ Xueqiu ~ request ~ headers:",headers);
+
     return axiosInstance
       .get(
         url,
         withHeaders
           ? {
-              headers: this.headers,
+              headers,
+              Referer: "https://xueqiu.com/",
+              Origin: "https://xueqiu.com",
+              "Sec-Fetch-Dest": "empty",
+              "Sec-Fetch-Mode": "cors",
+              "Sec-Fetch-Site": "same-site",
             }
           : {}
       )
       .then((response) => {
         // 处理cookie 问题
+
         if (response?.status === 400 || !response?.status) {
           this.init();
         }
+
         return response.data;
       })
       .catch((err) => {
-        this.init();
-        console.log(err);
+        console.log(
+          "🚀 ~ Xueqiu ~ request ~ err:",
+          err?.response?.data?.error_description
+        );
+        if (err.response?.status === 400) {
+          this.init();
+        }
       });
   }
+
   quote(symbol) {
     // `https://stock.xueqiu.com/v5/stock/quote.json?symbol=${symbol}&extend=detail`;
     const url = `https://stock.xueqiu.com/v5/stock/batch/quote.json?symbol=${symbol}&_=${timestamp()}`;
@@ -109,9 +130,9 @@ class Xueqiu {
     return this.request(url, false).then((res) => res.data);
   }
   hot(type = 1) {
-    const url = `https://stock.xueqiu.com/v5/stock/hot_stock/list.json?size=8&_type=12&type=12&_=${timestamp()}`;
+    const url = `https://stock.xueqiu.com/v5/stock/hot_stock/list.json?page=1&size=9&_type=12&type=12&_=${timestamp()}`;
     return this.request(url, false).then((res) => {
-      const items = res.data?.items || [];
+      const items = res?.data?.items || [];
       return items
         .map((quote) => {
           const { current, name, percent, symbol } = quote;

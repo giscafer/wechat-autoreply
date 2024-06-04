@@ -310,7 +310,9 @@ function textMsgHandler(msg) {
     } else {
       sendText("抱歉，您没有权限！", msg);
     }
-  }else if (text.startsWith("#看盘")) {
+  }
+  // 定时器
+  else if (text.startsWith("#看盘")) {
     if (isAdmin(talker)) {
       const roomName = room.payload.topic;
       if (mainRoom === roomName || fatFiresRoom === roomName) {
@@ -318,10 +320,11 @@ function textMsgHandler(msg) {
           clearInterval(intervalTimer);
           intervalTimer = null;
         }
+        sendText("自动看盘已开启", msg);
         intervalTimer = setInterval(() => {
           stockMsgHandler(msg, "#我的持仓");
+          console.log("🚀 ~ setInterval loop ~ roomName:", roomName)
         }, 60000);
-        sendText("自动看盘已开启", msg);
       }
     } else {
       sendText("抱歉，您没有权限！", msg);
