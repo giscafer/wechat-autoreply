@@ -1,5 +1,5 @@
-const moment = require('moment');
-const stocksData = require('../data/stocks');
+const moment = require("moment");
+const stocksData = require("../data/stocks");
 let v = Object.keys(stocksData);
 let k = Object.values(stocksData);
 
@@ -16,7 +16,7 @@ function parseMsg(msg, uppercase = false) {
   }
   [names, codes] = parseCode(msg);
   codes = codes.map((code) => {
-    let prefix = code.substr(0, 1) === '6' ? 'sh' : 'sz';
+    let prefix = code.substr(0, 1) === "6" ? "sh" : "sz";
     return `${uppercase ? prefix.toUpperCase() : prefix}${code}`;
   });
   return [names, codes];
@@ -35,7 +35,7 @@ function getCodeAndName(names, codes, current) {
 }
 
 function parseCode(str) {
-  let current = '';
+  let current = "";
   let names = [];
   let codes = [];
   for (var i = 0; i < str.length; i++) {
@@ -64,15 +64,20 @@ function parseCode(str) {
 }
 
 function parseDate(str) {
-  const match = str.match(regex);
+  console.log("🚀 ~ parseDate ~ str:", str);
   const _moment = moment();
-  _moment.set({
-    hour: 0,
-    minute: 0,
-    second: 0,
-    millisecond: 0,
-  });
-  console.log(match);
+
+  let match = false
+  if (str) {
+    match = str.match(regex);
+    _moment.set({
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0,
+    });
+  }
+  console.log(11, match);
   if (match) {
     const month = parseInt(match[3]);
     const day = parseInt(match[4]);

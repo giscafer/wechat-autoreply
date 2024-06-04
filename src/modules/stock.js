@@ -183,10 +183,27 @@ async function message(message, content) {
         sayer.say(msg + summary);
       });
     }
-    if (text.indexOf("热门") >= 0) {
+    if (text.indexOf("热股板") >= 0) {
       xueqiu.hot(type).then((msg) => {
         sayer.say(msg);
       });
+    }
+    if (text.indexOf("港股热股板") >= 0 || text.indexOf("H热股板") >= 0) {
+      xueqiu.hot(type, 13).then((msg) => {
+        sayer.say(msg);
+      });
+    }
+    if (text.indexOf("美热股板") >= 0) {
+      xueqiu.hot(type, 11).then((msg) => {
+        sayer.say(msg);
+      });
+      return;
+    }
+    if (text.indexOf("全球热股板") >= 0) {
+      xueqiu.hot(type, 10).then((msg) => {
+        sayer.say(msg);
+      });
+      return;
     }
     if (text.indexOf("龙虎榜") >= 0) {
       const date = parseDate(text);

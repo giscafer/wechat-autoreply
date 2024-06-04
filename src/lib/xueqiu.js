@@ -1,5 +1,5 @@
 const axiosInstance = require("../utils/request");
-const { timestamp } = require("../utils/index");
+const { timestamp, parseDate } = require("../utils/index");
 const randomHeader = require("../utils/randomHeader");
 const { defaultHeaders } = require("../constants");
 
@@ -31,7 +31,7 @@ class Xueqiu {
           .filter((h) => h != "")
           .join(";") + ";";
       this.cookies = c;
-      
+
       return c;
     });
   }
@@ -48,8 +48,10 @@ class Xueqiu {
               headers,
               Referer: "https://xueqiu.com/",
               Origin: "https://xueqiu.com",
-              "Sec-Fetch-Dest": "empty",
-              "Sec-Fetch-Mode": "cors",
+              // "Sec-Fetch-Dest": "empty",
+              // "Sec-Fetch-Mode": "cors",
+              "Sec-Fetch-Dest": "document",
+              "Sec-Fetch-Mode": "navigate",
               "Sec-Fetch-Site": "same-site",
             }
           : {}
@@ -66,7 +68,7 @@ class Xueqiu {
       .catch((err) => {
         console.log(
           "🚀 ~ Xueqiu ~ request ~ err:",
-          err?.response?.data?.error_description
+          err?.response?.data?.error_description || err
         );
         if (err.response?.status === 400) {
           this.init();
@@ -129,15 +131,15 @@ class Xueqiu {
     const url = `https://xueqiu.com/service/v5/stock/screener/quote/list?page=${page}&size=${size}&order=desc&orderby=percent&order_by=percent&market=CN&type=sh_sz&_=${timestamp()}`;
     return this.request(url, false).then((res) => res.data);
   }
-  hot(type = 1) {
-    const url = `https://stock.xueqiu.com/v5/stock/hot_stock/list.json?page=1&size=9&_type=12&type=12&_=${timestamp()}`;
-    return this.request(url, false).then((res) => {
+  hot(simple = 1, type = 12) {
+    const url = `https://stock.xueqiu.com/v5/stock/hot_stock/list.json?page=1&size=9&_type=${type}&type=${type}&_=${timestamp()}`;
+    return this.request(url).then((res) => {
       const items = res?.data?.items || [];
-      return items
+      const result = items
         .map((quote) => {
           const { current, name, percent, symbol } = quote;
           const red = percent >= 0;
-          if (type === 0) {
+          if (simple === 0) {
             return [`${symbol.substr(2)}：${red ? "+" : ""}${percent}%`].join(
               "，"
             );
@@ -149,11 +151,22 @@ class Xueqiu {
           ].join("，");
         })
         .join("\n\n");
+      let scope = "沪深";
+      if (type === 13) {
+        scope = "港股";
+      } else if (type === 11) {
+        scope = "美股";
+      } else if (type === 10) {
+        scope = "全球";
+      }
+      return `【${scope}热股板】\n\n` + result;
     });
   }
-  longhu(date) {
+  longhu(d) {
+    const date = d ? d : parseDate(d);
     const url = `https://xueqiu.com/service/v5/stock/hq/longhu?date=${date}&_=${timestamp()}`;
-    return this.request(url, false);
+    // console.log("🚀 ~ Xueqiu ~ longhu ~ url:", url);
+    return this.request(url);
   }
   longhuRes({ items, items_size }, date) {
     if (items_size === 0) {

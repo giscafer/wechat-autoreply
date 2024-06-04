@@ -11,7 +11,7 @@ const myCodes = [
   "SZ000895",
   "SZ002027",
   "SZ000333",
-  "SH601919",
+  "S601919",
 ];
 // const myCodes = [
 //   "SH600036",
@@ -41,8 +41,17 @@ function main1() {
 
 function main2() {
   xueqiu.hot().then(async (res) => {
-    console.log(res?.data);
+    console.log("🚀 ~ xueqiu.hot ~ res:\n\t", res);
   });
+  // xueqiu.longhu().then(async (res) => {
+  //   // console.log("🚀 ~ xueqiu.longhu ~ res:", res);
+  //   const data = res?.data;
+  //   if (!data) {
+  //     return;
+  //   }
+  //   const msg = xueqiu.longhuRes(data, date);
+  //   console.log(msg);
+  // });
 }
 
-main1();
+main2();
