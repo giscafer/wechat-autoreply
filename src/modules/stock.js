@@ -183,7 +183,7 @@ async function message(message, content) {
         sayer.say(msg + summary);
       });
     }
-    if (text.indexOf("热股板") >= 0) {
+    if (text.indexOf("热股板") >= 0 || text.indexOf("A股热股板") >= 0) {
       xueqiu.hot(type).then((msg) => {
         sayer.say(msg);
       });
@@ -193,7 +193,7 @@ async function message(message, content) {
         sayer.say(msg);
       });
     }
-    if (text.indexOf("美热股板") >= 0) {
+    if (text.indexOf("美股热股板") >= 0) {
       xueqiu.hot(type, 11).then((msg) => {
         sayer.say(msg);
       });
