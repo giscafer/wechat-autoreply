@@ -132,7 +132,7 @@ async function message(message, content, adminTalker) {
     const room = message.room();
     const from = message.talker();
     let text = content.replace(RegType.stock, "");
-    console.log("🚀 ~ message:", content, adminTalker);
+    // console.log("🚀 ~ message:", content, adminTalker);
     const sayer = room || message;
     /* if (room || debugFlag) {
     const topic = await room.topic();
