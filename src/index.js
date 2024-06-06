@@ -84,7 +84,6 @@ bot.on("message", async (msg) => {
   const room = msg.room();
   const talker = msg.talker();
   // 只在指定群里生效
-  // console.log('activeRooms=', activeRooms);
   if (talker?.payload?.name !== adminName) {
     if (room) {
       const roomName = room.payload.topic;
@@ -325,7 +324,7 @@ function textMsgHandler(msg) {
   else if (text.startsWith("#看盘")) {
     if (adminTalker) {
       const roomName = room.payload.topic;
-      if (mainRoom === roomName || fatFiresRoom === roomName) {
+      if (activeRooms.includes(roomName)) {
         if (intervalTimer) {
           clearInterval(intervalTimer);
           intervalTimer = null;
