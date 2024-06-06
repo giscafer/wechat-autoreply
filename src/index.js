@@ -39,6 +39,7 @@ let ocrOn = false;
 let contactUsers = [];
 // 定时看盘
 let intervalTimer;
+const monitorInterval = 60000;
 
 const adminName = adminUserName;
 
@@ -166,6 +167,14 @@ function textMsgHandler(msg) {
   let room = msg.room();
   let talker = msg.talker();
   const adminTalker = isAdmin(talker);
+  console.log(
+    "🚀 ~ textMsgHandler ~ adminTalker:",
+    adminTalker,
+    talker,
+    loginUserName,
+    adminName
+  );
+
   let text = msg.text();
   if (!text) return;
   let index = text.indexOf("\n");
@@ -322,10 +331,10 @@ function textMsgHandler(msg) {
           intervalTimer = null;
         }
         sendText("自动看盘已开启", msg);
+        const symbolText = `#${text.split("/")[1]}` || "#我的持仓";
         intervalTimer = setInterval(() => {
-          stockMsgHandler(msg, "#我的持仓", adminTalker);
-          console.log("🚀 ~ setInterval loop ~ roomName:", roomName, text);
-        }, 60000);
+          stockMsgHandler(msg, symbolText, adminTalker);
+        }, monitorInterval);
       }
     } else {
       sendText("抱歉，您没有权限！", msg);
