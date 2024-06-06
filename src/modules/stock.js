@@ -124,7 +124,7 @@ const mtCodes = [
  * @param {*} message
  */
 
-async function message(message, content) {
+async function message(message, content, adminTalker) {
   const simpleMode = RegType.stockPrefix.test(content);
   const numberMode = RegType.stockPrefix2.test(content);
   const type = simpleMode ? 1 : numberMode ? 0 : 2;
@@ -150,7 +150,7 @@ async function message(message, content) {
       symbol = codes.join(",");
     } else if (hqFlag) {
       symbol = overviewCodes.join(",");
-    } else if (text === "我的持仓") {
+    } else if (text === "我的持仓" && adminTalker) {
       symbol = myCodes.join(",");
     } else if (text === "央行" || text === "四大行" || text === "五大行") {
       symbol = fiveBankCodes.join(",");
@@ -183,7 +183,7 @@ async function message(message, content) {
         sayer.say(msg + summary);
       });
     }
-    if (text.indexOf("热股板") >= 0 || text.indexOf("A股热股板") >= 0) {
+    if (text.indexOf("热股板") === 0 || text.indexOf("A股热股板") >= 0) {
       xueqiu.hot(type).then((msg) => {
         sayer.say(msg);
       });

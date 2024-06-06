@@ -68,7 +68,7 @@ class Xueqiu {
       .catch((err) => {
         console.log(
           "🚀 ~ Xueqiu ~ request ~ err:",
-          err?.response?.data?.error_description || err
+          err?.response?.data?.error_description
         );
         if (err.response?.status === 400) {
           this.init();

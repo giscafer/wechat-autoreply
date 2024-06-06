@@ -165,6 +165,7 @@ function isAdmin(talker) {
 function textMsgHandler(msg) {
   let room = msg.room();
   let talker = msg.talker();
+  const adminTalker = isAdmin(talker);
   let text = msg.text();
   if (!text) return;
   let index = text.indexOf("\n");
@@ -290,7 +291,7 @@ function textMsgHandler(msg) {
   // 本人同意开启
   else if (text.startsWith("#上班")) {
     const roomName = room.payload.topic;
-    if (isAdmin(talker)) {
+    if (adminTalker) {
       if (activeRooms.indexOf(roomName) === -1) {
         activeRooms.push(roomName);
       }
@@ -301,7 +302,7 @@ function textMsgHandler(msg) {
   }
   // 关闭 bot
   else if (text.startsWith("#下班")) {
-    if (isAdmin(talker)) {
+    if (adminTalker) {
       const roomName = room.payload.topic;
       const index = activeRooms.indexOf(roomName);
       activeRooms.splice(index, 1);
@@ -313,7 +314,7 @@ function textMsgHandler(msg) {
   }
   // 定时器
   else if (text.startsWith("#看盘")) {
-    if (isAdmin(talker)) {
+    if (adminTalker) {
       const roomName = room.payload.topic;
       if (mainRoom === roomName || fatFiresRoom === roomName) {
         if (intervalTimer) {
@@ -322,21 +323,21 @@ function textMsgHandler(msg) {
         }
         sendText("自动看盘已开启", msg);
         intervalTimer = setInterval(() => {
-          stockMsgHandler(msg, "#我的持仓");
-          console.log("🚀 ~ setInterval loop ~ roomName:", roomName)
+          stockMsgHandler(msg, "#我的持仓", adminTalker);
+          console.log("🚀 ~ setInterval loop ~ roomName:", roomName, text);
         }, 60000);
       }
     } else {
       sendText("抱歉，您没有权限！", msg);
     }
   } else if (text.startsWith("#关闭看盘")) {
-    if (isAdmin(talker)) {
+    if (adminTalker) {
       clearInterval(intervalTimer);
       sendText("自动看盘已关闭", msg);
     } else {
       sendText("抱歉，您没有权限！", msg);
     }
   } else if (RegType.stock.test(text)) {
-    stockMsgHandler(msg, text);
-  } 
+    stockMsgHandler(msg, text, adminTalker);
+  }
 }
