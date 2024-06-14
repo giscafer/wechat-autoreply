@@ -1,12 +1,13 @@
-// const CacheData = require('../utils/cache');
 const { parseMsg, parseDate } = require("../utils/index");
 const xueqiu = require("../lib/xueqiu");
 const eastmoney = require("../lib/eastmoney");
+const { RegType } = require("../constants");
+const getSummary = require("./stock-summary");
+// const CacheData = require('../utils/cache');
 // const { activeRooms } = require('../config');
 // const roomCacheData = new CacheData();
-const { RegType } = require("../constants");
 
-const debugFlag = true;
+// const debugFlag = true;
 
 // 大盘
 const overviewCodes = [
@@ -184,8 +185,13 @@ async function message(message, content, adminTalker) {
         sayer.say(msg + summary);
       });
     }
+    if (text.indexOf("今日行情") === 0) {
+      return getSummary().then((msg) => {
+        sayer.say(msg);
+      });
+    }
     if (text.indexOf("热股板") === 0 || text.indexOf("A股热股板") >= 0) {
-      xueqiu.hot(type).then((msg) => {
+      return xueqiu.hot(type).then((msg) => {
         sayer.say(msg);
       });
     }
@@ -223,4 +229,7 @@ async function message(message, content, adminTalker) {
   }
 }
 
-module.exports = message;
+module.exports = {
+  stockMessage: message,
+  overviewCodes,
+};

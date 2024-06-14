@@ -16,8 +16,6 @@ const _ = require("./utils/util");
 const imgUtil = require("./utils/image");
 const { RegType } = require("./constants");
 const {
-  mainRoom,
-  fatFiresRoom,
   activeRooms,
   adminUserName,
 } = require("./config");
@@ -31,7 +29,7 @@ const ip = require("./modules/ip");
 const weather = require("./modules/weather");
 const keyword = require("./modules/keyword");
 const jobs = require("./modules/jobs");
-const stockMsgHandler = require("./modules/stock");
+const stockMessage = require("./modules/stock").stockMessage;
 
 let bot, loginUserName;
 // ocr启用状态
@@ -332,7 +330,7 @@ function textMsgHandler(msg) {
         sendText("自动看盘已开启", msg);
         const symbolText = `#${text.split("/")[1]}` || "#我的持仓";
         intervalTimer = setInterval(() => {
-          stockMsgHandler(msg, symbolText, adminTalker);
+          stockMessage(msg, symbolText, adminTalker);
         }, monitorInterval);
       }
     } else {
@@ -346,6 +344,6 @@ function textMsgHandler(msg) {
       sendText("抱歉，您没有权限！", msg);
     }
   } else if (RegType.stock.test(text)) {
-    stockMsgHandler(msg, text, adminTalker);
+    stockMessage(msg, text, adminTalker);
   }
 }

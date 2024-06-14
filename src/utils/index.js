@@ -63,11 +63,16 @@ function parseCode(str) {
   return [names, codes];
 }
 
-function parseDate(str) {
-  console.log("🚀 ~ parseDate ~ str:", str);
+/**
+ * 获取日期
+ * @param {*} str
+ * @param {String} formatter 格式化日期
+ * @returns
+ */
+function parseDate(str, formatter) {
   const _moment = moment();
 
-  let match = false
+  let match = false;
   if (str) {
     match = str.match(regex);
     _moment.set({
@@ -77,11 +82,10 @@ function parseDate(str) {
       millisecond: 0,
     });
   }
-  console.log(11, match);
+
   if (match) {
     const month = parseInt(match[3]);
     const day = parseInt(match[4]);
-    console.log(month, day);
     if (month >= 1 && month <= 12 && day >= 0 && day <= 31) {
       _moment.set({
         month: month - 1,
@@ -94,6 +98,10 @@ function parseDate(str) {
         year: year,
       });
     }
+  }
+
+  if (formatter) {
+    return _moment.format(formatter);
   }
   return timestamp(_moment);
 }
