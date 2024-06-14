@@ -51,7 +51,7 @@ async function genContent() {
   const fallConceptBoardText = await getBoardListText(3, 0);
 
   const dateStr = parseDate(Date.now() + "", "yyyy年MM月DD日");
-  const content = `一、​【${dateStr}行情总结】\n\n今日沪深市场行情总结如下：\n
+  const content = `一、​【${dateStr}行情总结】\n\n今日沪深市场行情总结如下：
 ${overviewText}\n\n
 ${hotText}\n\n
 二、【行业表现】\n\n
