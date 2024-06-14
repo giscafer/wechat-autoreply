@@ -164,13 +164,6 @@ function textMsgHandler(msg) {
   let room = msg.room();
   let talker = msg.talker();
   const adminTalker = isAdmin(talker);
-  console.log(
-    "🚀 ~ textMsgHandler ~ adminTalker:",
-    adminTalker,
-    talker,
-    loginUserName,
-    adminName
-  );
 
   let text = msg.text();
   if (!text) return;
@@ -179,7 +172,7 @@ function textMsgHandler(msg) {
     text = text.substr(index + 1, text.length);
   }
   text = text.trim();
-  console.log(`${talker.name()}：${text}`);
+  // console.log(`${talker.name()}：${text}`);
   // 图片搜索
   if (text.indexOf("图 ") === 0) {
     const keyword = text.replace("图", "").replace("图片", "").trim();
@@ -195,7 +188,6 @@ function textMsgHandler(msg) {
     getPicture(keyword)
       .then((url) => {
         if (url) {
-          console.log(url);
           let imgUrl = imgUtil.getImageUrl(url);
           if (!imgUrl) {
             msg.say("搜索的图片解析失败：" + url);
