@@ -45,13 +45,25 @@ async function message(message, content, adminTalker) {
       } */
 
     const [names, codes] = parseMsg(text, true);
+
     let symbol = "";
+    if (text.indexOf("今日行情") === 0) {
+      if (!adminTalker) {
+        symbol = "SH600036,03968";
+      } else {
+        return getSummary().then((msg) => {
+          sayer.say(msg);
+        });
+      }
+    }
     const hqFlag = text.indexOf("大盘") >= 0 || text.indexOf("指数") >= 0;
     // console.log(text, codes);
     if (codes.length > 0) {
       symbol = codes.join(",");
     } else if (hqFlag) {
       symbol = overviewCodes.join(",");
+    } else if (text === "招商银行" && adminTalker) {
+      symbol = "SH600036,03968";
     } else if (text === "我的持仓" && adminTalker) {
       symbol = myCodes.join(",");
     } else if (text === "央行" || text === "四大行" || text === "五大行") {
@@ -85,11 +97,7 @@ async function message(message, content, adminTalker) {
         sayer.say(msg + summary);
       });
     }
-    if (text.indexOf("今日行情") === 0) {
-      return getSummary().then((msg) => {
-        sayer.say(msg);
-      });
-    }
+
     if (text.indexOf("热股板") === 0 || text.indexOf("A股热股板") >= 0) {
       return xueqiu.hot(type).then((msg) => {
         sayer.say(msg);
