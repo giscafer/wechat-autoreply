@@ -62,7 +62,7 @@ async function message(message, content, adminTalker) {
       symbol = codes.join(",");
     } else if (hqFlag) {
       symbol = overviewCodes.join(",");
-    } else if (text === "招商银行" && adminTalker) {
+    } else if (text === "招银" && adminTalker) {
       symbol = "SH600036,03968";
     } else if (text === "我的持仓" && adminTalker) {
       symbol = myCodes.join(",");
