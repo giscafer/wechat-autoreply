@@ -58,12 +58,12 @@ async function message(message, content, adminTalker) {
     }
     const hqFlag = text.indexOf("大盘") >= 0 || text.indexOf("指数") >= 0;
     // console.log(text, codes);
-    if (codes.length > 0) {
+    if (text === "招商银行" && adminTalker) {
+      symbol = "SH600036,03968";
+    } else if (codes.length > 0) {
       symbol = codes.join(",");
     } else if (hqFlag) {
       symbol = overviewCodes.join(",");
-    } else if (text === "招商银行" && adminTalker) {
-      symbol = "SH600036,03968";
     } else if (text === "我的持仓" && adminTalker) {
       symbol = myCodes.join(",");
     } else if (text === "央行" || text === "四大行" || text === "五大行") {
