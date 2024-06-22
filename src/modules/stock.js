@@ -62,7 +62,7 @@ async function message(message, content, adminTalker) {
       symbol = codes.join(",");
     } else if (hqFlag) {
       symbol = overviewCodes.join(",");
-    } else if (text === "招银" && adminTalker) {
+    } else if (text === "招商银行" && adminTalker) {
       symbol = "SH600036,03968";
     } else if (text === "我的持仓" && adminTalker) {
       symbol = myCodes.join(",");
@@ -82,7 +82,7 @@ async function message(message, content, adminTalker) {
       symbol = hshlCodes.join(",");
     }
     if (symbol) {
-      xueqiu.quote(symbol).then(async (res) => {
+      return xueqiu.quote(symbol).then(async (res) => {
         const { items } = res?.data || {};
         const msg = xueqiu.batchQuoteResp(items, type);
         if (!msg) return;
@@ -115,10 +115,9 @@ async function message(message, content, adminTalker) {
       return;
     }
     if (text.indexOf("全球热股板") >= 0) {
-      xueqiu.hot(type, 10).then((msg) => {
+      return xueqiu.hot(type, 10).then((msg) => {
         sayer.say(msg);
       });
-      return;
     }
     if (text.indexOf("龙虎榜") >= 0) {
       const date = parseDate(text);
