@@ -106,13 +106,13 @@ class Xueqiu {
         }
         if (type === 1) {
           return [
-            `${red ? "🍖" : "🌱"} ${name}：现价 ${current}`,
+            `${red ? "🍖" : "🌱"} ${name}(${symbol})：现价 ${current}`,
             `${red > 0 ? "涨" : "跌"}幅 ${percent}%`,
             // `振幅 ${amplitude}%`,
           ].join("，");
         }
         return [
-          `${red ? "🍖" : "🌱"} ${name}  ( ${status} )`,
+          `${red ? "🍖" : "🌱"} ${name}(${symbol})  ( ${status} )`,
           `${red > 0 ? "涨" : "跌"}幅 : ${percent}%\n现价 : ${current}`,
 
           `今开 : ${open}\n今日最高 : ${high} \n昨收 : ${last_close}`,
