@@ -15,10 +15,7 @@ const { FileBox } = require("file-box");
 const _ = require("./utils/util");
 const imgUtil = require("./utils/image");
 const { RegType } = require("./constants");
-const {
-  activeRooms,
-  adminUserName,
-} = require("./config");
+const { activeRooms, adminUserName } = require("./config");
 
 // modules
 // const poetry = require('./modules/poetry'); // 需要测试诗词的放开这个注释即可
@@ -322,7 +319,11 @@ function textMsgHandler(msg) {
         sendText("自动看盘已开启", msg);
         const symbolText = `#${text.split("/")[1]}` || "#我的持仓";
         intervalTimer = setInterval(() => {
-          stockMessage(msg, symbolText, adminTalker);
+          if (new Date().getHours() < 15 && new Date().getHours() >= 9) {
+            stockMessage(msg, symbolText, adminTalker);
+          } else {
+            clearInterval(intervalTimer);
+          }
         }, monitorInterval);
       }
     } else {
