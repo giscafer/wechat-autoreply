@@ -18,10 +18,10 @@ const myCodes = [
   "SH600036",
   "03968",
   "SZ002142",
+  "SH601318",
+  "SZ300498",
   "SZ000858",
-  "SH600702",
   "SZ000568",
-  "SZ300595",
 ];
 // 央企六大行
 const fiveBankCodes = [
@@ -36,10 +36,45 @@ const fiveBankCodes = [
 const shareBankCodes = [
   "SH600036",
   "SH601166",
+  "SZ002142",
   "SZ000001",
   "SH601998",
   "SH600000",
   "SH600016",
+];
+// 证券
+const securityCodes = [
+  "SH600030",
+  "SZ300059",
+  "SH600837",
+  "SH601688",
+  "SH601211",
+  "SH600999",
+  "SH600958",
+  "SZ000166",
+  "SH601901",
+  "SH601377",
+  "SH601788",
+  "SH601099",
+  "SH600906",
+];
+// 半导体
+const semiconductorCodes = [
+  "SZ002371",
+  "SH688981",
+  "SH603501",
+  "SH688041",
+  "SH603986",
+  "SH688008",
+  "SH688012",
+  "SH600584",
+  "SH688256",
+  "SZ002049",
+  "SZ300782",
+  "SZ002156",
+  "SH688072",
+  "SH688525",
+  "SH688120",
 ];
 // 分红股
 const cashCodes = [
@@ -69,13 +104,12 @@ const liquorCodes = [
 ];
 // 医药
 const medicalCodes = [
+  "SH688235",
+  "SH600276",
   "SH688180",
   "SH688578",
-  "SH600196",
-  "SH688235",
-  "SH600196",
   "SH603259",
-  "SH600276",
+  "SH600196",
   "SZ000661",
   "SZ300347",
   "SZ300122",
@@ -111,6 +145,13 @@ const mtCodes = [
   "SH601898",
 ];
 
+// 运营商
+const operatorCodes = [
+  "SH600941",
+  "SH601728",
+  "SH600050",
+];
+
 const defaultHeaders = {
   Accept:
     "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
@@ -142,4 +183,7 @@ module.exports = {
   mtCodes,
   cashCodes,
   shareBankCodes,
+  securityCodes,
+  operatorCodes,
+  semiconductorCodes,
 };

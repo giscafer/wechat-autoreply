@@ -12,6 +12,9 @@ const {
   mtCodes,
   cashCodes,
   shareBankCodes,
+  securityCodes,
+  operatorCodes,
+  semiconductorCodes,
 } = require("../constants");
 const getSummary = require("./stock-summary");
 // const CacheData = require('../utils/cache');
@@ -80,6 +83,12 @@ async function message(message, content, adminTalker) {
       symbol = medicalCodes.join(",");
     } else if (text === "互联网" || text === "恒生互联网") {
       symbol = hshlCodes.join(",");
+    } else if (text === "运营商" || text === "电信") {
+      symbol = operatorCodes.join(",");
+    } else if (text === "证券" || text === "券商") {
+      symbol = securityCodes.join(",");
+    } else if (text === "半导体" || text === "芯片") {
+      symbol = semiconductorCodes.join(",");
     }
     if (symbol) {
       return xueqiu.quote(symbol).then(async (res) => {
