@@ -152,6 +152,13 @@ const operatorCodes = [
   "SH600050",
 ];
 
+// 石油
+const petroleumCodes = [
+  "SH600938",
+  "SH601857",
+  "SH600028",
+];
+
 const defaultHeaders = {
   Accept:
     "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
@@ -186,4 +193,5 @@ module.exports = {
   securityCodes,
   operatorCodes,
   semiconductorCodes,
+  petroleumCodes,
 };

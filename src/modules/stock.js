@@ -89,6 +89,8 @@ async function message(message, content, adminTalker) {
       symbol = securityCodes.join(",");
     } else if (text === "半导体" || text === "芯片") {
       symbol = semiconductorCodes.join(",");
+    } else if (text === "石油" || text === "三桶油") {
+      symbol = petroleumCodes.join(",");
     }
     if (symbol) {
       return xueqiu.quote(symbol).then(async (res) => {

@@ -30,7 +30,7 @@ async function getStockText(symbol, overview = false) {
  */
 async function getBoardListText(t, po = 1) {
   const res = await eastMoney.getBoardList(t, po);
-  const topList = res.filter(item.f14?.indexOf?.('昨日')===-1).slice(0, 6);
+  const topList = res.filter(item=>item.f14?.indexOf?.('昨日')===-1).slice(0, 6);
   const text = `${po === 1 ? "涨幅居前" : "跌幅居前"}：\n
 ${topList
   .map((item) => {
