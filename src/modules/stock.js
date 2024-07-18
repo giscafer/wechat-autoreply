@@ -15,6 +15,7 @@ const {
   securityCodes,
   operatorCodes,
   semiconductorCodes,
+  petroleumCodes
 } = require("../constants");
 const getSummary = require("./stock-summary");
 // const CacheData = require('../utils/cache');
